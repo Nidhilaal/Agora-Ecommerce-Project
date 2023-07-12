@@ -80,7 +80,7 @@ public class OtpServiceImpl implements OtpService {
             System.out.println("new otp generated");
    
          final String ACCOUNT_SID = "ACe6f4968215d17b073d0bf94a16d67cfd";
-         final String AUTH_TOKEN = "d4d9bbe2efae5632eda0f3813c9a95d7";
+         final String AUTH_TOKEN = "42165565cd08a833d5f619d71c23ac85";
 
         Twilio.init(ACCOUNT_SID, AUTH_TOKEN);
         PhoneNumber from = new PhoneNumber("+14179628992");
