@@ -194,10 +194,10 @@
 				<!-- row -->
 				<div class="row">
 					<div class="col-md-12">
-						<h3 class="breadcrumb-header">Checkout</h3>
+						<h3 class="breadcrumb-header">My Account</h3>
 						<ul class="breadcrumb-tree">
 							<li><a href="#">Home</a></li>
-							<li class="active">Checkout</li>
+							<li class="active">My Account</li>
 						</ul>
 					</div>
 				</div>
@@ -208,182 +208,147 @@
 		<!-- /BREADCRUMB -->
 
 		<!-- SECTION -->
-		<div class="section">
-			<!-- container -->
-			<div class="container">
-				<!-- row -->
-				<div class="row">
+		<section class="txt-center p-lr-15 p-tb-10">
+		<h3 class="ltext-105  txt-center">
+			Account Details
+		</h3>
 
-					<div class="col-md-7">
-						<!-- Billing Details -->
-						<div class="billing-details">
-							<div class="section-title">
-								<h3 class="title">Billing address</h3>
-							</div>
-							<div class="form-group">
-								<input class="input" type="text" name="first-name" placeholder="First Name">
-							</div>
-							<div class="form-group">
-								<input class="input" type="text" name="last-name" placeholder="Last Name">
-							</div>
-							<div class="form-group">
-								<input class="input" type="email" name="email" placeholder="Email">
-							</div>
-							<div class="form-group">
-								<input class="input" type="text" name="address" placeholder="Address">
-							</div>
-							<div class="form-group">
-								<input class="input" type="text" name="city" placeholder="City">
-							</div>
-							<div class="form-group">
-								<input class="input" type="text" name="country" placeholder="Country">
-							</div>
-							<div class="form-group">
-								<input class="input" type="text" name="zip-code" placeholder="ZIP Code">
-							</div>
-							<div class="form-group">
-								<input class="input" type="tel" name="tel" placeholder="Telephone">
-							</div>
-							<div class="form-group">
-								<div class="input-checkbox">
-									<input type="checkbox" id="create-account">
-									<label for="create-account">
-										<span></span>
-										Create Account?
-									</label>
-									<div class="caption">
-										<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt.</p>
-										<input class="input" type="password" name="password" placeholder="Enter Your Password">
-									</div>
-								</div>
-							</div>
-						</div>
-						<!-- /Billing Details -->
+		<h4 class="text-danger" th:if="${addAddress}">
+			Please add an address to continue with the checkout.
+		</h4>
 
-						<!-- Shiping Details -->
-						<div class="shiping-details">
-							<div class="section-title">
-								<h3 class="title">Shiping address</h3>
-							</div>
-							<div class="input-checkbox">
-								<input type="checkbox" id="shiping-address">
-								<label for="shiping-address">
-									<span></span>
-									Ship to a diffrent address?
-								</label>
-								<div class="caption">
-									<div class="form-group">
-										<input class="input" type="text" name="first-name" placeholder="First Name">
-									</div>
-									<div class="form-group">
-										<input class="input" type="text" name="last-name" placeholder="Last Name">
-									</div>
-									<div class="form-group">
-										<input class="input" type="email" name="email" placeholder="Email">
-									</div>
-									<div class="form-group">
-										<input class="input" type="text" name="address" placeholder="Address">
-									</div>
-									<div class="form-group">
-										<input class="input" type="text" name="city" placeholder="City">
-									</div>
-									<div class="form-group">
-										<input class="input" type="text" name="country" placeholder="Country">
-									</div>
-									<div class="form-group">
-										<input class="input" type="text" name="zip-code" placeholder="ZIP Code">
-									</div>
-									<div class="form-group">
-										<input class="input" type="tel" name="tel" placeholder="Telephone">
-									</div>
-								</div>
-							</div>
-						</div>
-						<!-- /Shiping Details -->
-
-						<!-- Order notes -->
-						<div class="order-notes">
-							<textarea class="input" placeholder="Order Notes"></textarea>
-						</div>
-						<!-- /Order notes -->
-					</div>
-
-					<!-- Order Details -->
-					<div class="col-md-5 order-details">
-						<div class="section-title text-center">
-							<h3 class="title">Your Order</h3>
-						</div>
-						<div class="order-summary">
-							<div class="order-col">
-								<div><strong>PRODUCT</strong></div>
-								<div><strong>TOTAL</strong></div>
-							</div>
-							<div class="order-products">
-								<div class="order-col">
-									<div th:text="${product.name}" >1x Product Name Goes Here</div>
-									<div th:text="'₹' + ${product.price}">$980.00</div>
-								</div>
-								<!-- <div class="order-col">
-									<div>2x Product Name Goes Here</div>
-									<div>$980.00</div>
-								</div> -->
-							</div>
-							<div class="order-col">
-								<div>Shiping</div>
-								<div><strong>FREE</strong></div>
-							</div>
-							<div class="order-col">
-								<div><strong>TOTAL</strong></div>
-								<div ><strong class="order-total" th:text="'₹' + ${product.price}">$2940.00</strong></div>
-							</div>
-						</div>
-						<div class="payment-method">
-							<div class="input-radio">
-								<input type="radio" name="payment" id="payment-1">
-								<label for="payment-1">
-									<span></span>
-									Credit/Debit Card
-								</label>
-								<div class="caption">
-									<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
-								</div>
-							</div>
-							<div class="input-radio">
-								<input type="radio" name="payment" id="payment-2">
-								<label for="payment-2">
-									<span></span>
-									UPI
-								</label>
-								<div class="caption">
-									<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
-								</div>
-							</div>
-							<div class="input-radio">
-								<input type="radio" name="payment" id="payment-3">
-								<label for="payment-3">
-									<span></span>
-									Cash on Delivery
-								</label>
-								<div class="caption">
-									<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
-								</div>
-							</div>
-						</div>
-						<div class="input-checkbox">
-							<input type="checkbox" id="terms">
-							<label for="terms">
-								<span></span>
-								I've read and accept the <a href="#">terms & conditions</a>
-							</label>
-						</div>
-						<a href="#" class="primary-btn order-submit">Place order</a>
-					</div>
-					<!-- /Order Details -->
-				</div>
-				<!-- /row -->
-			</div>
-			<!-- /container -->
+		<div th:if="${setupAddressWarning}" class="alert alert-warning" role="alert">
+			<h4 class="alert-heading">No Address Found!</h4>
+			<p>Please add an address to place an order.</p>
+			<a onclick="addAddressClick()" href="#" type="button" class="btn-sm btn-primary text-white">Add New Address</a>
 		</div>
+
+
+	</section>
+<!--Profile-->
+	<div class="row justify-content-center">
+		<div class="card mb-3" style="max-width: 1000px;">
+			<div class="row g-0">
+				<div class="col-md-3 col-12 d-flex align-items-center justify-content-center m-2">
+					<!-- Your image or Lottie animation code here -->
+					<script src="/js/lottie-player.js"></script>
+					<lottie-player src="https://assets5.lottiefiles.com/temp/lf20_815p4J.json"  background="transparent"  speed="2"  style="width: 300px; height: 150px;"   autoplay></lottie-player>
+
+				</div>
+				<!-- <div class="col-md-8 col-12">
+					<div class="card-body text-center">
+						<h5 class="card-title font-weight-bold">eShop Wallet</h5>
+						<h5 class="card-title" th:text="${'Balance: ₹ ' + #numbers.formatDecimal(walletBalance, 0, 0)}">Balance</h5>
+						<p th:text="${'Last Updated: ' + walletUpdateTime}">Last Updated:</p>
+						<p><a href="/walletHistory">View History</a></p>
+					</div>
+				</div> -->
+			</div>
+		</div>
+	</div>
+
+	<div class="container rounded bg-white mt-5 mb-5">
+
+		<div class="row">
+
+
+			<div class="col-md-3 border-right">
+				<div class="d-flex flex-column align-items-center text-center p-3 py-5">
+					<img class="rounded-circle mt-5" width="150px" src="/images/icons/user-icon.png">
+					<span class="font-weight-bold"></span><span class="text-black-50"></span><span> </span></div>
+			</div>
+			<div class="col-md-8 border-right">
+				<div class="p-3 py-1">
+					<form th:action="@{/user/save}" th:object="${UserDto}" method="POST" id="mainProfileForm">
+					<div class="d-flex justify-content-between align-items-center mb-3">
+						<h4 class="text-right">Profile Settings</h4>
+					</div>
+
+					<div class="row mt-2">
+						<div class="col-md-6"><label class="labels">First Name</label><input type="text" class="form-control" placeholder="First Name" name="firstName" th:value="${user.firstName}"></div>
+						<div class="col-md-6"><label class="labels">Last Name</label><input type="text" class="form-control"  name="lastName"  th:value="${user.lastName}" placeholder="Last Name"></div>
+					</div>
+					<div class="row mt-3">
+						<div class="col-md-12"><label class="labels">ID</label><input type="text" class="form-control" placeholder="" name="uuid" th:value="${user.uuid}" readonly="readonly" ></div>
+						<div class="col-md-12"><label class="labels">username</label><input type="text" class="form-control" placeholder="" name="uuid" th:value="${user.username}" readonly="readonly" ></div>
+						<div class="col-md-12"><label class="labels">Phone</label><input type="text" class="form-control" placeholder="enter phone number" name="phone" th:value="${user.phone}"></div>
+<!--						<div class="col-md-12"><label class="labels">Flat</label><input type="text" class="form-control" placeholder="flat" name="flat" th:value="${user.savedAddress.flat}"></div>-->
+<!--						<div class="col-md-12"><label class="labels">Area</label><input type="text" class="form-control" placeholder="area" name="area" th:value="${user.savedAddress.area}"></div>-->
+<!--						<div class="col-md-12"><label class="labels">Town</label><input type="text" class="form-control" placeholder="town" name="town" th:value="${user.savedAddress.town}"></div>-->
+<!--						<div class="col-md-12"><label class="labels">State</label><input type="text" class="form-control" placeholder="city" name="city" th:value="${user.savedAddress.city}"></div>-->
+<!--						<div class="col-md-12"><label class="labels">State</label><input type="text" class="form-control" placeholder="state" name="state" th:value="${user.savedAddress.state}"></div>-->
+						<div class="col-md-12"><label class="labels">Email ID</label><input type="text" class="form-control" placeholder="enter email id" name="email" th:value="${user.email}"></div>
+<!--						<div class="col-md-12"><label class="labels">PIN</label><input type="text" class="form-control" placeholder="pin" name="pin" th:value="${user.savedAddress.pin}"></div>-->
+						<div class="col-md-12"><label class="labels">Old Password</label><input onchange="passwordChange()" type="text" class="form-control" placeholder="Old Password" name="password"></div>
+						<div class="col-md-12"><label class="labels">New Password</label><input  onchange="passwordChange()"  type="text" class="form-control" placeholder="New Password" name="newPassword" ></div>
+						<div class="col-md-12"><label class="labels">Re Enter New Password</label><input  onchange="passwordChange()"  type="text" class="form-control" placeholder="New Password" name="newPasswordRe"></div>
+					</div>
+
+						<div class="container mt-3">
+							<h4>Address List</h4>
+
+							<div class="row mt-3">
+								<!-- Loop through addresses and display each address as a card -->
+								<div th:if="${address.enabled}" class="col-md-4" th:each="address, rowIndex : ${addresses}">
+									<div class="card mb-3">
+										<div class="card-body">
+											<div class="d-flex align-items-center justify-content-between">
+												<h5 class="card-title" th:text="${'Address ' + rowIndex.count}"> </h5>
+												<span th:if="${address.defaultAddress}" class="badge badge-success">Default</span>
+											</div>
+
+											<p class="card-text">
+												Flat: <span th:text="${address.flat}"></span><br>
+												Area: <span th:text="${address.area}"></span><br>
+												Town: <span th:text="${address.town}"></span><br>
+												City: <span th:text="${address.city}"></span><br>
+												State: <span th:text="${address.state}"></span><br>
+												PIN: <span th:text="${address.pin}"></span><br>
+												Landmark: <span th:text="${address.landmark}"></span>
+											</p>
+
+											<a  href="#"  th:attr="onclick='editOldAddress(event, &quot;' + ${address.uuid} + '&quot;, &quot;' + ${address.flat} + '&quot;, &quot;' + ${address.area} + '&quot;, &quot;' + ${address.town} + '&quot;, &quot;' + ${address.city} + '&quot;, &quot;' + ${address.state} + '&quot;, &quot;' + ${address.pin} + '&quot;, &quot;' + ${address.landmark} + '&quot, &quot;' + ${address.defaultAddress} + '&quot;)'"
+											   title="Edit" data-toggle="tooltip" id="editAddressBtn"><i class="zmdi zmdi-edit"></i></a>
+												<a title="Delete" data-toggle="tooltip" th:href="@{/address/delete/{id}(id=${address.uuid})}"><i class="mx-3 zmdi zmdi-delete"></i></a>
+
+										</div>
+									</div>
+
+								</div>
+							</div>
+
+							<a onclick="addAddressClick()" href="#" type="button" class="btn-sm btn-primary text-white">Add New Address</a>
+						</div>
+						<div class="mt-5 text-center"><button onfocus="passwordChange()" id="submitBtn" class="btn btn-primary profile-button" type="submit">Save Profile</button></div>
+					</form>
+
+					<div hidden="hidden" class="container mt-3" id="addNewAddressContainer">
+						<form th:action="@{/address/save}" th:object="${UserAddress}" method="post">
+
+							<div class="col-md-12"><input type="hidden" id="uuidEdit" name="uuid"></div>
+							<div class="col-md-12"><label class="labels">Flat</label><input required="required" id="flatEdit"  type="text" class="form-control" placeholder="" name="flat" ></div>
+							<div class="col-md-12"><label class="labels">Area</label><input id="areaEdit"  type="text" class="form-control" placeholder="" name="area" ></div>
+							<div class="col-md-12"><label class="labels">Town</label><input id="townEdit"  type="text" class="form-control" placeholder="" name="town" ></div>
+							<div class="col-md-12"><label class="labels">City</label><input id="cityEdit"  type="text" class="form-control" placeholder="" name="city"></div>
+							<div class="col-md-12"><label class="labels">State</label><input id="stateEdit"  type="text" class="form-control" placeholder="" name="state"></div>
+							<div class="col-md-12"><label class="labels">Landmark</label><input id="landmarkEdit"  type="text" class="form-control" placeholder="" name="landmark"></div>
+							<div class="col-md-6"><label class="labels">PIN</label><input id="pinEdit" type="text" class="form-control" placeholder="" name="pin" ></div>
+							<div class="col-md-1">
+								<label class="labels">Default</label><input id="defaultAddressEdit" type="checkbox" class="form-control" placeholder="" name="defaultAddress">
+							</div>
+
+							<div class="mt-5 text-center">
+								<button id="submitAddressBtn" class="btn btn-primary profile-button" type="submit">Save Address</button>
+								<button onclick="window.location.reload()" id="cancelAddressBtn" class="btn btn-warning profile-button" type="button">Cancel</button>
+							</div>
+						</form>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	</div>
+	</div>
 		<!-- /SECTION -->
 
 		<!-- NEWSLETTER -->
@@ -519,7 +484,10 @@
 		<script src="js/slick.min.js"></script>
 		<script src="js/nouislider.min.js"></script>
 		<script src="js/jquery.zoom.min.js"></script>
-		<script src="js/main.js"></script>
+		<script src="js/main.js"></script>	
+			<script src="js/profile.js"></script>
+		
 
 	</body>
 </html>
+

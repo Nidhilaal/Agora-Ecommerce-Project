@@ -1,5 +1,7 @@
 package com.ecommerce.beta.entity;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 import javax.persistence.CascadeType;
@@ -10,6 +12,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotNull;
 
@@ -55,6 +58,10 @@ public class UserInfo {
 	
 	@Column(unique = true)
 	private String phone;
+	
+	@OneToMany(mappedBy = "userInfo")
+    @ToString.Exclude
+    private List<Address> savedAddresses = new ArrayList<>();
 	
 	private boolean enabled=true;
 	
