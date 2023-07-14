@@ -209,7 +209,7 @@
 
 		<!-- SECTION -->
 		<section class="txt-center p-lr-15 p-tb-10">
-		<h3 class="ltext-105  txt-center">
+		<h3 class="ltext-105   txt-center">
 			Account Details
 		</h3>
 
@@ -252,11 +252,11 @@
 		<div class="row">
 
 
-			<div class="col-md-3 border-right">
+			<!-- <div class="col-md-3 border-right">
 				<div class="d-flex flex-column align-items-center text-center p-3 py-5">
 					<img class="rounded-circle mt-5" width="150px" src="/images/icons/user-icon.png">
 					<span class="font-weight-bold"></span><span class="text-black-50"></span><span> </span></div>
-			</div>
+			</div> -->
 			<div class="col-md-8 border-right">
 				<div class="p-3 py-1">
 					<form th:action="@{/user/save}" th:object="${UserDto}" method="POST" id="mainProfileForm">
@@ -308,8 +308,8 @@
 											</p>
 
 											<a  href="#"  th:attr="onclick='editOldAddress(event, &quot;' + ${address.uuid} + '&quot;, &quot;' + ${address.flat} + '&quot;, &quot;' + ${address.area} + '&quot;, &quot;' + ${address.town} + '&quot;, &quot;' + ${address.city} + '&quot;, &quot;' + ${address.state} + '&quot;, &quot;' + ${address.pin} + '&quot;, &quot;' + ${address.landmark} + '&quot, &quot;' + ${address.defaultAddress} + '&quot;)'"
-											   title="Edit" data-toggle="tooltip" id="editAddressBtn"><i class="zmdi zmdi-edit"></i></a>
-												<a title="Delete" data-toggle="tooltip" th:href="@{/address/delete/{id}(id=${address.uuid})}"><i class="mx-3 zmdi zmdi-delete"></i></a>
+											   title="Edit" data-toggle="tooltip" id="editAddressBtn"><i class="btn-sm btn-primary mx-3">edit</i></a>
+												<a title="Delete" data-toggle="tooltip" th:href="@{/address/delete/{id}(id=${address.uuid})}"><i class="mx-3 btn-sm btn-primary">delete</i></a>
 
 										</div>
 									</div>
@@ -317,7 +317,7 @@
 								</div>
 							</div>
 
-							<a onclick="addAddressClick()" href="#" type="button" class="btn-sm btn-primary text-white">Add New Address</a>
+							<a onclick="addAddressClick()" href="#" type="button" class="btn-sm btn-primary text-white ">Add New Address</a>
 						</div>
 						<div class="mt-5 text-center"><button onfocus="passwordChange()" id="submitBtn" class="btn btn-primary profile-button" type="submit">Save Profile</button></div>
 					</form>
@@ -326,13 +326,13 @@
 						<form th:action="@{/address/save}" th:object="${UserAddress}" method="post">
 
 							<div class="col-md-12"><input type="hidden" id="uuidEdit" name="uuid"></div>
-							<div class="col-md-12"><label class="labels">Flat</label><input required="required" id="flatEdit"  type="text" class="form-control" placeholder="" name="flat" ></div>
-							<div class="col-md-12"><label class="labels">Area</label><input id="areaEdit"  type="text" class="form-control" placeholder="" name="area" ></div>
-							<div class="col-md-12"><label class="labels">Town</label><input id="townEdit"  type="text" class="form-control" placeholder="" name="town" ></div>
-							<div class="col-md-12"><label class="labels">City</label><input id="cityEdit"  type="text" class="form-control" placeholder="" name="city"></div>
-							<div class="col-md-12"><label class="labels">State</label><input id="stateEdit"  type="text" class="form-control" placeholder="" name="state"></div>
-							<div class="col-md-12"><label class="labels">Landmark</label><input id="landmarkEdit"  type="text" class="form-control" placeholder="" name="landmark"></div>
-							<div class="col-md-6"><label class="labels">PIN</label><input id="pinEdit" type="text" class="form-control" placeholder="" name="pin" ></div>
+							<div class="col-md-6"><label class="labels">Flat</label><input required="required" id="flatEdit"  type="text" class="form-control" placeholder="" name="flat" ></div>
+							<div class="col-md-6"><label class="labels">Area</label><input id="areaEdit"  type="text" class="form-control" placeholder="" name="area" ></div>
+							<div class="col-md-6"><label class="labels">Town</label><input id="townEdit"  type="text" class="form-control" placeholder="" name="town" ></div>
+							<div class="col-md-6"><label class="labels">City</label><input id="cityEdit"  type="text" class="form-control" placeholder="" name="city"></div>
+							<div class="col-md-6"><label class="labels">State</label><input id="stateEdit"  type="text" class="form-control" placeholder="" name="state"></div>
+							<div class="col-md-6"><label class="labels">Landmark</label><input id="landmarkEdit"  type="text" class="form-control" placeholder="" name="landmark"></div>
+							<div class="col-md-2"><label class="labels">PIN</label><input id="pinEdit" type="text" class="form-control" placeholder="" name="pin" ></div>
 							<div class="col-md-1">
 								<label class="labels">Default</label><input id="defaultAddressEdit" type="checkbox" class="form-control" placeholder="" name="defaultAddress">
 							</div>
@@ -347,8 +347,7 @@
 			</div>
 		</div>
 	</div>
-	</div>
-	</div>
+	
 		<!-- /SECTION -->
 
 		<!-- NEWSLETTER -->
