@@ -22,7 +22,7 @@ import lombok.ToString;
 @Setter
 @AllArgsConstructor
 @ToString(exclude = {"userInfo"})
-public class Address {
+public class Address{
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO, generator = "uuid2")

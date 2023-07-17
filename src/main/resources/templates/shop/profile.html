@@ -310,13 +310,10 @@
 											<a  href="#"  th:attr="onclick='editOldAddress(event, &quot;' + ${address.uuid} + '&quot;, &quot;' + ${address.flat} + '&quot;, &quot;' + ${address.area} + '&quot;, &quot;' + ${address.town} + '&quot;, &quot;' + ${address.city} + '&quot;, &quot;' + ${address.state} + '&quot;, &quot;' + ${address.pin} + '&quot;, &quot;' + ${address.landmark} + '&quot, &quot;' + ${address.defaultAddress} + '&quot;)'"
 											   title="Edit" data-toggle="tooltip" id="editAddressBtn"><i class="btn-sm btn-primary mx-3">edit</i></a>
 												<a title="Delete" data-toggle="tooltip" th:href="@{/address/delete/{id}(id=${address.uuid})}"><i class="mx-3 btn-sm btn-primary">delete</i></a>
-
 										</div>
 									</div>
-
 								</div>
 							</div>
-
 							<a onclick="addAddressClick()" href="#" type="button" class="btn-sm btn-primary text-white ">Add New Address</a>
 						</div>
 						<div class="mt-5 text-center"><button onfocus="passwordChange()" id="submitBtn" class="btn btn-primary profile-button" type="submit">Save Profile</button></div>
@@ -324,7 +321,7 @@
 
 					<div hidden="hidden" class="container mt-3" id="addNewAddressContainer">
 						<form th:action="@{/address/save}" th:object="${UserAddress}" method="post">
-
+						
 							<div class="col-md-12"><input type="hidden" id="uuidEdit" name="uuid"></div>
 							<div class="col-md-6"><label class="labels">Flat</label><input required="required" id="flatEdit"  type="text" class="form-control" placeholder="" name="flat" ></div>
 							<div class="col-md-6"><label class="labels">Area</label><input id="areaEdit"  type="text" class="form-control" placeholder="" name="area" ></div>
@@ -336,7 +333,6 @@
 							<div class="col-md-1">
 								<label class="labels">Default</label><input id="defaultAddressEdit" type="checkbox" class="form-control" placeholder="" name="defaultAddress">
 							</div>
-
 							<div class="mt-5 text-center">
 								<button id="submitAddressBtn" class="btn btn-primary profile-button" type="submit">Save Address</button>
 								<button onclick="window.location.reload()" id="cancelAddressBtn" class="btn btn-warning profile-button" type="button">Cancel</button>
@@ -351,40 +347,6 @@
 		<!-- /SECTION -->
 
 		<!-- NEWSLETTER -->
-		<div id="newsletter" class="section">
-			<!-- container -->
-			<div class="container">
-				<!-- row -->
-				<div class="row">
-					<div class="col-md-12">
-						<div class="newsletter">
-							<p>Sign Up for the <strong>NEWSLETTER</strong></p>
-							<form>
-								<input class="input" type="email" placeholder="Enter Your Email">
-								<button class="newsletter-btn"><i class="fa fa-envelope"></i> Subscribe</button>
-							</form>
-							<ul class="newsletter-follow">
-								<li>
-									<a href="#"><i class="fa fa-facebook"></i></a>
-								</li>
-								<li>
-									<a href="#"><i class="fa fa-twitter"></i></a>
-								</li>
-								<li>
-									<a href="#"><i class="fa fa-instagram"></i></a>
-								</li>
-								<li>
-									<a href="#"><i class="fa fa-pinterest"></i></a>
-								</li>
-							</ul>
-						</div>
-					</div>
-				</div>
-				<!-- /row -->
-			</div>
-			<!-- /container -->
-		</div>
-		<!-- /NEWSLETTER -->
 
 		<div id="newsletter" class="section">
 			<!-- container -->
@@ -463,9 +425,7 @@
 							<span class="copyright">
 								<!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
 								Copyright &copy;<script>document.write(new Date().getFullYear());</script> All rights reserved
-							<!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
-							</span>
-
+							<!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->							</span>
 
 						</div>
 					</div>
@@ -484,9 +444,7 @@
 		<script src="js/nouislider.min.js"></script>
 		<script src="js/jquery.zoom.min.js"></script>
 		<script src="js/main.js"></script>	
-			<script src="js/profile.js"></script>
-		
-
+		<script src="js/profile.js"></script>
 	</body>
 </html>
 

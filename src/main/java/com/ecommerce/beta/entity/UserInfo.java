@@ -71,4 +71,14 @@ public class UserInfo {
 	@JoinColumn(name = "role_id")
 	private Role role;
 
+    @OneToMany(mappedBy = "userInfo")
+    @ToString.Exclude
+    private List<Cart> cartItems = new ArrayList<>();
+
+    
+
+    @OneToMany(mappedBy = "userInfo")
+    @ToString.Exclude
+    private List<OrderHistory> orderHistories = new ArrayList<>();
+
 }

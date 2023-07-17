@@ -20,7 +20,7 @@ import lombok.Setter;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class Role   {
+public class Role  {
 	
 	@Id
     @GeneratedValue(strategy = GenerationType.AUTO, generator = "uuid2")

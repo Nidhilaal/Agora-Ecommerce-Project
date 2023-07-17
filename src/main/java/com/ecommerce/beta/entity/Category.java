@@ -26,7 +26,7 @@ import lombok.ToString;
 @ToString
 @AllArgsConstructor
 @NoArgsConstructor
-public class Category {
+public class Category{
 	
 	@Id
     @GeneratedValue(strategy = GenerationType.AUTO, generator = "uuid2")

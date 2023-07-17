@@ -234,27 +234,28 @@
 					        <p th:text="${product.description}">
 					            Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
 					        </p>
-					
+					<form id="addToCartForm" method="POST" action="/cart/add">
 					        <div class="product-options">
+					           
 					            <label>
-					                Size
-					                <select class="input-select">
-					                    <option value="0">X</option>
+					                Variant
+					                <select class="input-select" name="variantId">
+					                    <!-- Use Thymeleaf expression to iterate over variants and populate the dropdown options -->
+					                    <option th:each="variant : ${product.variants}" th:value="${variant.uuid}"  th:selected="${variant.uuid == variant.uuid}"th:text="${variant.name}" th:data-url="@{/productDetail(variantUuid=${variant.uuid})}"></option>
 					                </select>
-					            </label>
-					            <label>
-					                Color
-					                <select class="input-select">
-					                    <option value="0">Red</option>
-					                </select>
-					            </label>
+					               <!--  th:each = "variant : ${product.variants}"
+													 th:text="${variant.name}"
+													 th:value="${variant.uuid}"
+													 th:selected="${variant.uuid == selectedVariant.uuid}"
+													 th:data-url="@{/productDetail(variantUuid=${variant.uuid})}" -->
+				            </label>
 					        </div>
 					
 					        <div class="add-to-cart">
 					            <div class="qty-label">
 					                Qty
 					                <div class="input-number">
-					                    <input type="number">
+					                    <input type="number" name="qty">
 					                    <span class="qty-up">+</span>
 					                    <span class="qty-down">-</span>
 					                </div>
@@ -264,6 +265,7 @@
 					            <button class="add-to-cart-btn" ><i class="fa fa-shopping-cart"></i> add to cart</button>
 					        	</a>
 					        </div>
+					        </form>
 					
 					        <ul class="product-btns">
 					            <li><a href="#"><i class="fa fa-heart-o"></i> add to wishlist</a></li>
@@ -745,6 +747,9 @@
 		<script src="js/nouislider.min.js"></script>
 		<script src="js/jquery.zoom.min.js"></script>
 		<script src="js/main.js"></script>
+		<input type="hidden" th:value="${addedToCart}" id="addedToCartValue">
+	
+	
 
 	</body>
 </html>

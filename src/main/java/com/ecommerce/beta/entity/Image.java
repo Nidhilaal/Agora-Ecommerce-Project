@@ -20,7 +20,7 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class Image  {
+public class Image  extends BaseEntity{
 	
 	@Id
     @GeneratedValue(strategy = GenerationType.AUTO, generator = "uuid2")
