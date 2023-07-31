@@ -22,8 +22,6 @@ public class OrderHistoryServiceImpl implements OrderHistoryService {
     @Autowired
     OrderHistoryRepository orderHistoryRepository;
 
-
-
     @Override
     public OrderHistory save(OrderHistory orderHistory) {
         return orderHistoryRepository.save(orderHistory);
@@ -101,6 +99,16 @@ public class OrderHistoryServiceImpl implements OrderHistoryService {
             return Page.empty();
         }
     }
+
+	@Override
+	public List<OrderHistory> findByUserInfo(UserInfo userInfo) {
+		return orderHistoryRepository.findByUserInfo(userInfo);
+	}
+
+//	@Override
+//	public boolean findByAddressId(UUID uuid) {
+//		return orderHistoryRepository.findByAddressId(uuid);
+//	}
 
   
 }

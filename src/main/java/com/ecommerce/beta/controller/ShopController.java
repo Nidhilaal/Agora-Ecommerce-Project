@@ -1,6 +1,10 @@
 package com.ecommerce.beta.controller;
 
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
@@ -23,13 +27,17 @@ import com.ecommerce.beta.dto.UserDto;
 import com.ecommerce.beta.entity.Address;
 import com.ecommerce.beta.entity.Cart;
 import com.ecommerce.beta.entity.Category;
+import com.ecommerce.beta.entity.OrderHistory;
+import com.ecommerce.beta.entity.OrderItems;
 import com.ecommerce.beta.entity.Product;
 import com.ecommerce.beta.entity.UserInfo;
-import com.ecommerce.beta.entity.Variant;
+import com.ecommerce.beta.enums.OrderStatus;
 import com.ecommerce.beta.service.AddressService;
 import com.ecommerce.beta.service.CartService;
 import com.ecommerce.beta.service.CategoryService;
 import com.ecommerce.beta.service.ImageService;
+import com.ecommerce.beta.service.OrderHistoryService;
+import com.ecommerce.beta.service.OrderItemService;
 import com.ecommerce.beta.service.OtpService;
 import com.ecommerce.beta.service.ProductService;
 import com.ecommerce.beta.service.UserInfoService;
@@ -53,6 +61,10 @@ public class ShopController {
     ProductService productService;
     @Autowired
     CartService cartService;
+    @Autowired
+    OrderHistoryService orderHistoryService;
+    @Autowired
+    OrderItemService orderItemService;
 	
 	public String getCurrentUsername() {
 		Authentication authentication= SecurityContextHolder.getContext().getAuthentication();
@@ -131,36 +143,25 @@ public class ShopController {
 	
 	@GetMapping("/productDetail")
 	public String productView(@RequestParam(value = "productUuid", required = false) String productUuid,
-	                          @RequestParam(value = "variantUuid", required = false) String variantUuid,
-	                          Model model) {
-	    Product selectedProduct = productService.getProduct(UUID.fromString(productUuid));
-	    List<Variant> selectedVariants = selectedProduct.getVariants();
-
-	    Variant selectedVariant = null;
-	    if (variantUuid != null) {
-	        for (Variant variant : selectedVariants) {
-	            if (variant.getUuid().equals(variantUuid)) {
-	                selectedVariant = variant;
-	                break;
-	            }
-	        }
-	    }
-
-	    model.addAttribute("product", selectedProduct);
-	    model.addAttribute("selectedVariant", selectedVariant);
-	    return "shop/productView";
-	}
-
-	
-	@GetMapping("/addToCart")
-	public String cartView(@RequestParam(value = "productUuid", required = false) String productUuid,
-			Model model) {
-		Product addedProduct= new Product();
-		addedProduct=productService.getProduct(UUID.fromString(productUuid));
-		model.addAttribute(addedProduct);
-		return "shop/checkout";
+			Model model){
+		
+		Product selectedProduct=new Product();
+		selectedProduct= productService.getProduct(UUID.fromString(productUuid));
+//		boolean addedToCart = cartService.addToCart(UUID.fromString(productUuid), 1);
+//	        model.addAttribute("addedToCart", addedToCart);
+        model.addAttribute("product", selectedProduct);
+        return "shop/productView";
 	}
 	
+//	@GetMapping("/addToCart")
+//	public String cartView(@RequestParam(value = "productUuid", required = false) String productUuid,
+//			Model model) {
+//		Product addedProduct= new Product();
+//		addedProduct=productService.getProduct(UUID.fromString(productUuid));
+//		model.addAttribute(addedProduct);
+//		return "shop/checkout";
+//	}
+//	
 	//display user profile page
     @GetMapping("/profile")
     public String viewProfile(@RequestParam(name="addAddress", defaultValue = "false", required = false)boolean addAddress,
@@ -292,19 +293,13 @@ public class ShopController {
     	return "redirect:/profile";
     }
     
-    @GetMapping("viewCart")
+    @GetMapping("/viewCart")
     public String viewCart(Model model,
-                           @RequestParam(required = false) UUID addressUUID
-                           ) {
+                           @RequestParam(required = false) UUID addressUUID) {
         String currentUsername = String.valueOf(getCurrentUsername());
-        if (currentUsername.equals("anonymousUser")) {
-            return "redirect:/login";
-        }
-
+        
         UserInfo userInfo = userInfoService.findByUsername(getCurrentUsername());
-
-
-
+        
         long count = userInfo.getSavedAddresses()
                 .stream()
                 .filter(a -> a.isEnabled())
@@ -317,6 +312,9 @@ public class ShopController {
 
 
         List<Cart> cartItems = cartService.findByUser(userInfo);
+
+        //remove items if they are out of stock or disabled
+      
 
         List<Address> addressList = userAddressService.findByUserInfoAndEnabled(userInfo,true);
 
@@ -331,8 +329,8 @@ public class ShopController {
             model.addAttribute("cartEmpty", false);
         }
 
-     
 
+  
 
         model.addAttribute("loggedIn", true);
 
@@ -341,11 +339,11 @@ public class ShopController {
         model.addAttribute("cartItems", cartItems);
         //find cart total
         double cartTotal = cartItems.stream()
-                .mapToDouble(cartItem -> cartItem.getVariant().getSellingPrice() * cartItem.getQuantity())
+                .mapToDouble(cartItem -> cartItem.getProductId().getPrice().intValue() * cartItem.getQuantity())
                 .sum();
         //mrp
         double cartMrp = cartItems.stream()
-                .mapToDouble(cartItem -> cartItem.getVariant().getPrice() * cartItem.getQuantity())
+                .mapToDouble(cartItem -> cartItem.getProductId().getPrice().intValue() * cartItem.getQuantity())
                 .sum();
 
         float total = (float) cartTotal;
@@ -381,132 +379,61 @@ public class ShopController {
             model.addAttribute("address", userAddressService.findById(addressUUID));
         }
 
-        //coupon redemption logic
-        /*if (couponCode != null && !expired) {
-            System.out.println("Coupon: " + couponCode);
-            Coupon coupon = couponService.findByCode(couponCode);
-            if (coupon == null) {
-                System.out.println("Invalid coupon");
-            } else {
-
-                if (coupon.isExpired()) {
-                    return "redirect:/viewCart?expired=true&couponCode=" + couponCode;
-                }
-
-                CouponValidityResponseDto couponValidityResponseDto = cartService.checkCouponValidity();
-
-                if(couponValidityResponseDto.isValid()){
-                    System.out.println("Coupon is valid");
-
-                     total = (float) couponValidityResponseDto.getCartTotal();
-                     tax = total / 100 * 18; //18%
-                     total -= tax;
-                     gross = total + tax;
-
-                    model.addAttribute("cartTax", Math.round(tax));
-                    model.addAttribute("priceOff", Math.round(couponValidityResponseDto.getPriceOff()));
-                    model.addAttribute("cartTotal", Math.round(total));
-                    model.addAttribute("cartSaved", Math.round(cartMrp - cartTotal + couponValidityResponseDto.getPriceOff()));
-
-                        model.addAttribute("couponApplied", true);
-                        model.addAttribute("couponCode", couponCode);
-                }else{
-                        model.addAttribute("couponApplied", false);
-                        model.addAttribute("couponCode", "");
-                        System.out.println("Coupon is invalid");
-
-                    model.addAttribute("priceOff", Math.round(couponValidityResponseDto.getPriceOff()));
-                    model.addAttribute("cartTotal", Math.round(couponValidityResponseDto.getCartTotal()));
-                    model.addAttribute("cartSaved", Math.round(cartMrp - cartTotal - couponValidityResponseDto.getPriceOff()));
-                }
-*/
-
-                //check coupon type
-//                switch (coupon.getCouponType()) {
-//                    case 1 -> {
-//                        System.out.println("Product Coupon");
-//                        boolean productFoundInCart = false;
-//                        Float productPrice = 0F;
-//                        Product couponProduct = productService.getProduct(coupon.getApplicableFor());
-//                        if (couponProduct == null) {
-//                            System.out.println("Product in coupon not found");
-//                        } else {
-//                            for (Cart item : cartItems) {
-//                                if (item.getVariant().getProductId().equals(couponProduct)) {
-//                                    System.out.println("Product in coupon found in cart");
-//                                    productFoundInCart = true;
-//                                    productPrice = item.getVariant().getSellingPrice();
-//                                    break;
-//                                }
-//                            }
-//                            if (productFoundInCart) {
-//                                float priceOff = productPrice / 100 * coupon.getOffPercentage();
-//
-//                                priceOff = priceOff > coupon.getMaxOff() ? coupon.getMaxOff() : priceOff;
-//
-//                                model.addAttribute("couponApplied", true);
-//                                model.addAttribute("couponCode", couponCode);
-//                                model.addAttribute("priceOff", Math.round(priceOff));
-//                                model.addAttribute("cartTotal", Math.round(cartTotal - priceOff));
-//                                model.addAttribute("cartSaved", Math.round(cartMrp - cartTotal + priceOff));
-//
-//                            }
-//                        }
-//                    }
-//                    case 2 -> {
-//                        System.out.println("Category Coupon");
-//                        boolean categoryFound = false;
-//                        float offerPrice = 0F;
-//                        Category category = categoryService.getCategory(coupon.getApplicableFor());
-//                        if (category == null) {
-//                            System.out.println("Category Not Found");
-//                        } else {
-//                            for (Cart item : cartItems) {
-//                                if (item.getVariant().getProductId().getCategory().equals(category)) {
-//                                    System.out.println("Category in coupon found in cart item");
-//                                    categoryFound = true;
-//                                    offerPrice += item.getVariant().getSellingPrice();
-//                                }
-//                            }
-//                            if (categoryFound) {
-//                                float priceOff = offerPrice / 100 * coupon.getOffPercentage();
-//                                priceOff = priceOff > coupon.getMaxOff() ? coupon.getMaxOff() : priceOff;
-//
-//                                model.addAttribute("couponApplied", true);
-//                                model.addAttribute("couponCode", couponCode);
-//                                model.addAttribute("priceOff", Math.round(priceOff));
-//                                model.addAttribute("cartTotal", Math.round(cartTotal - priceOff));
-//                                model.addAttribute("cartSaved", Math.round(cartMrp - cartTotal + priceOff));
-//
-//                            } else {
-//                                System.out.println("No items in cart belong to the coupon category");
-//                            }
-//                        }
-//                    }
-//                    case 3 -> System.out.println("Brand Coupon");
-//                    case 4 -> {
-//                        System.out.println("General Coupon");
-//                        float priceOff = (float) (cartTotal / 100F * coupon.getOffPercentage());
-//                        priceOff = priceOff > coupon.getMaxOff() ? coupon.getMaxOff() : priceOff;
-//                        model.addAttribute("couponApplied", true);
-//                        model.addAttribute("couponCode", couponCode);
-//                        model.addAttribute("priceOff", Math.round(priceOff));
-//                        model.addAttribute("cartTotal", Math.round(cartTotal - priceOff));
-//                        model.addAttribute("cartSaved", Math.round(cartMrp - cartTotal + priceOff));
-//                    }
-//                    case 5 -> System.out.println("User Coupon");
-//                    default -> System.out.println("Unknown Coupon Type");
-//                }
-//            }
 
 
-        
-
-
-        return "shop/cart";
+        return "shop/checkout";
     }
     
+    @GetMapping("changeAddress/{uuid}")
+    public String changeAddress(@PathVariable(name = "uuid") UUID uuid) {
+        return "redirect:/viewCart?addressUUID=" + uuid;
+    }
     
- 
+    @GetMapping("/orderDetails")
+    public String orderDetails(@RequestParam(name = "orderId") UUID orderId,
+                               @RequestParam(name = "newOrderFlag", required = false, defaultValue = "false") boolean newOrderFlag,
+                               Model model) {
+
+        OrderHistory orderHistory = orderHistoryService.findById(orderId);
+        List<OrderItems> orderItems = orderItemService.findByOrder(orderHistory);
+
+        model.addAttribute("orderDate", formatDate(orderHistory.getCreatedAt()));
+        model.addAttribute("order", orderHistory);
+        model.addAttribute("orderItems", orderItems);
+        model.addAttribute("orderSuccessfulAnimation", newOrderFlag);
+        
+        return "shop/orderDetails";
+    }
+    
+    String formatDate(Date date) {
+        //format date to readable format
+        LocalDateTime dateTime = date.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime();
+
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm");
+        return dateTime.format(formatter);
+    }
+      
+    @GetMapping("/orders")
+    public String orderHistory(Model model) {
+    	List<OrderHistory> orderList=orderHistoryService.findByUserInfo(userInfoService.findByUsername(getCurrentUsername()));
+    	model.addAttribute("orderList",orderList);
+    	return "shop/orderHistory";
+    }
+    
+    @PostMapping("/cancel-order")
+    public String cancelOrder(@RequestParam("uuid") UUID uuid) {
+    	System.out.println("heoo");
+        OrderHistory order = orderHistoryService.findById(uuid);
+        if (order != null && !order.getOrderStatus().equals("CANCELLED")) {
+        	System.out.println("he0oo");
+        	 if (order != null && order.getOrderStatus() != OrderStatus.CANCELLED) {
+        		 System.out.println("he00oo");
+                 order.setOrderStatus(OrderStatus.CANCELLED);
+                 orderHistoryService.save(order);
+             }        
+        	 }
+        return "redirect:/orders";
+    }
+   
 }
   

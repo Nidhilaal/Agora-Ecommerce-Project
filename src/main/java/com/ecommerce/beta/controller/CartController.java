@@ -24,7 +24,6 @@ import com.ecommerce.beta.entity.Cart;
 import com.ecommerce.beta.entity.OrderHistory;
 import com.ecommerce.beta.entity.OrderItems;
 import com.ecommerce.beta.entity.UserInfo;
-import com.ecommerce.beta.entity.Variant;
 import com.ecommerce.beta.enums.OrderStatus;
 import com.ecommerce.beta.enums.OrderType;
 import com.ecommerce.beta.repository.OrderHistoryRepository;
@@ -33,7 +32,6 @@ import com.ecommerce.beta.service.CartService;
 import com.ecommerce.beta.service.OrderHistoryService;
 import com.ecommerce.beta.service.OrderItemService;
 import com.ecommerce.beta.service.UserInfoService;
-import com.ecommerce.beta.service.VariantService;
 
 @Controller
 @RequestMapping("/cart")
@@ -46,8 +44,7 @@ public class CartController {
     OrderHistoryService orderHistoryService;
     @Autowired
     OrderItemService orderItemService;
-    @Autowired
-    VariantService variantService;
+ 
     @Autowired
     AddressService userAddressService;
     @Autowired
@@ -90,9 +87,9 @@ public class CartController {
 
                 if (item.getQuantity() != 0) { //if itemQty == 0, after the previous if condition, it means that the product has gone out of stock.
                     OrderItems orderItem = new OrderItems();
-                    orderItem.setVariant(item.getVariant());
+//                    orderItem.setVariant(item.getVariant());
                     orderItem.setQuantity(item.getQuantity());
-                    orderItem.setOrderPrice(item.getVariant().getSellingPrice());
+                    orderItem.setOrderPrice(item.getProductId().getPrice().intValue());
                     orderItem.setOrderHistory(orderHistory);
                     orderItemsList.add(orderItem);
                 }
@@ -100,29 +97,6 @@ public class CartController {
 
 
             CouponValidityResponseDto couponValidityResponseDto = cartService.checkCouponValidity();
-//
-//            if(couponValidityResponseDto.isValid()){
-//                System.out.println("Coupon validation successful");
-//
-//                Coupon coupon = couponService.findByCode(couponValidityResponseDto.getCoupon());
-//                //reduce coupon count
-//                String res = couponService.redeem(coupon.getCode());
-//
-//                if(res.equals("redeemed")){
-//
-//                    orderHistory.setCoupon(coupon);
-//
-//                    System.out.println("Coupon "+coupon.getCode()+" successfully redeemed for Order "+orderHistory.getUuid()+" by User:"+userInfo.getUsername());
-//
-//                }else{
-//                    System.out.println("Valid Coupon Redemption Failed: "+coupon.toString());
-//                    couponValidityResponseDto.setPriceOff(0);
-//                    System.out.println(res);
-//                }
-//
-//            }else{
-//                System.out.println("Validation failed");
-//            }
 
 
 
@@ -139,12 +113,12 @@ public class CartController {
 
             orderHistory = orderHistoryService.save(orderHistory);
 
-            for (OrderItems item : orderItemsList) {
-                //reduce stock
-                Variant variant = variantService.findById(item.getVariant().getUuid());
-                System.out.println(variant.getProductId().getName()+" "+variant.getName());
-                variantService.save(variant);
-            }
+//            for (OrderItems item : orderItemsList) {
+//                //reduce stock
+//                Variant variant = variantService.findById(item.getVariant().getUuid());
+//                System.out.println(variant.getProductId().getName()+" "+variant.getName());
+//                variantService.save(variant);
+//            }
 
             //Delete items from cart
             for (Cart item : cartItems) {

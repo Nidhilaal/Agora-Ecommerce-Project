@@ -127,21 +127,21 @@
                 <i class="menu-icon tf-icons bx bx-package"></i>
                 <div data-i18n="Analytics">Orders</div>
               </a>
-            </li>
-             <!-- Banners  -->
+    <!--         </li>
+             Banners 
              <li class="menu-item">
               <a href="/banner/all" class="menu-link">
                 <i class="menu-icon tf-icons bx bx-photo-album"></i>
                 <div data-i18n="Analytics">Banners</div>
               </a>
             </li>
-             <!-- Coupons  -->
+             Coupons 
              <li class="menu-item">
               <a href="/coupon/all" class="menu-link">
                 <i class="menu-icon tf-icons bx bx-star"></i>
                 <div data-i18n="Analytics">Coupons</div>
               </a>
-            </li>
+            </li> -->
 
 
           </ul>
@@ -274,8 +274,8 @@
                           <div class="d-flex justify-content-end">
                               <a data-bs-toggle="tooltip" data-bs-offset="0,4" data-bs-placement="top" data-bs-html="true" title="" data-bs-original-title="<span>Regenerate and overwrite existing invoice</span>"  type="button" th:href="@{/order/generateInvoice?uuid={orderId}(orderId = ${order.uuid})}" class="btn btn-info m-1">Regenerate Invoice</a>
 <!--                              calling rest from a th:value-->
-                              <button type="button" th:data-uuid="${order.uuid}" onclick="viewInvoice(this.getAttribute('data-uuid'))" class="btn btn-success m-1"  data-bs-toggle="tooltip" data-bs-offset="0,4" data-bs-placement="top" data-bs-html="true" title="" data-bs-original-title="<span>View existing Invoice. Generates new invoice if not found.</span>">View Invoice</button>
-
+<!--                               <button type="button" th:data-uuid="${order.uuid}" onclick="viewInvoice(this.getAttribute('data-uuid'))" class="btn btn-success m-1"  data-bs-toggle="tooltip" data-bs-offset="0,4" data-bs-placement="top" data-bs-html="true" title="" data-bs-original-title="<span>View existing Invoice. Generates new invoice if not found.</span>">View Invoice</button>
+ -->
                               <a type="button" href="/order/all" class="btn btn-primary m-1">Order List</a>
                               <button onclick="editOrder()" id="editBtn" type="button" class="btn btn-warning m-1">Edit</button>
                               <button  data-bs-toggle="modal" data-bs-target="#exampleModal" hidden id="deleteBtn" type="button" class="btn btn-danger m-1">Delete</button>
@@ -287,11 +287,11 @@
                           <form  th:action="@{/order/update}" th:object="${OrderDto}"  method="post">
                               <fieldset disabled id="orderFieldset">
 
-                                  <span th:if="${paymentFailed}" class="my-2 badge rounded-pill bg-danger">Order Failed</span>
+                          <!--         <span th:if="${paymentFailed}" class="my-2 badge rounded-pill bg-danger">Order Failed</span>
                                   <span th:if="${!paymentFailed}" class="my-2 badge rounded-pill bg-success">Order Successful</span>
 
                                   <span th:if="${order.deleted}" class="my-2 badge rounded-pill bg-danger">Deleted</span>
-
+ -->
 
 
 
@@ -328,8 +328,8 @@
                                                   <div th:if="${order.userInfo.createdAt != null}">
                                                       User Since: <span th:text="${order.userInfo.createdAt}"></span><br>
                                                   </div>
-                                                  Wallet Balance: <span th:text="${order.userInfo.wallet.balance}"></span><br>
-                                                  </p>
+<!--                                                   Wallet Balance: <span th:text="${order.userInfo.wallet.balance}"></span><br>
+ -->                                                  </p>
                                               </div>
                                           </div>
 
@@ -354,21 +354,9 @@
                                       </div>
 
 
-
-
-
-
-
-
-
-
-
-
-
-
                                   </div>
-
-
+ 
+<!-- 
                                   <div class="form-group">
                                       <label for="orderStatus">Status:</label>
                                       <select class="form-control editable-field" id="orderStatus" name="orderStatus">
@@ -380,8 +368,8 @@
                                       </select>
                                   </div>
 
-                                  <div th:if="${online}">
-                                      <div th:if="${order.onlineOrderRef.razorPayOrderId != null}" class="mb-3">
+                                  <div th:if="${online}"> -->
+                                      <!-- <div th:if="${order.onlineOrderRef.razorPayOrderId != null}" class="mb-3">
                                           <label  class="form-label">RazorPay Order ID</label>
                                           <input th:value="${order.onlineOrderRef.razorPayOrderId}"  type="text" id="razOrderId" class="form-control" placeHolder="" readonly="readonly">
 
@@ -419,9 +407,9 @@
                                       <label  class="form-label">Coupon Applied</label>
                                       <input th:value="${order.coupon.code}"  type="text" id="coupon" class="form-control" placeHolder="" readonly="readonly">
 
-                                  </div>
+                                  </div> -->
 
-                                  <div class="mb-3">
+                                 <!--  <div class="mb-3">
                                       <label  class="form-label">Total</label>
                                       <input th:value="${order.total}"  type="text" id="total" class="form-control" placeHolder="" readonly="readonly">
 
@@ -447,11 +435,11 @@
                                       <label  class="form-label">Type</label>
                                       <input th:value="${order.orderType}"  type="text" id="orderType " class="form-control" placeHolder="" readonly="readonly">
 
-                                  </div>
+                                  </div> -->
 
                                   <!--            add order item list-->
 
-                                  <div class="container mt-5">
+                                  <!-- <div class="container mt-5">
                                       <div class="table-responsive">
                                           <legend class="">Order Items</legend>
                                           <table class="table table-bordered table-hover mb-5">
@@ -478,11 +466,11 @@
                                                       >
                                                       </a>
                                                   </td>
-                                                  <td th:text="${item.variant.name}"></td>
-                                                  <td th:text="${item.orderPrice}"></td>
+                                                  <td th:text="${item.produtId}"></td>
+                                                  <td th:text="${item.price}"></td>
                                                   <td th:text="${item.quantity}"></td>
                                                   <td th:text="${item.variant.stock}"></td>
-                                                  <td th:text="${item.quantity * item.orderPrice}"></td>
+                                                  <td th:text="${item.quantity * item.price}"></td>
                                                   <td th:text="${item.quantity * item.getProfitPerItem()}"></td>
                                               </tr>
                                               </tbody>
@@ -490,7 +478,7 @@
                                       </div>
 
                                   </div>
-
+ -->
 
                                   <div class="mb-3" id="passSection" hidden>
 

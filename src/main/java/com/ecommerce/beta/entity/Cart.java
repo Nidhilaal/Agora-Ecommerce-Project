@@ -3,6 +3,7 @@ package com.ecommerce.beta.entity;
 import java.util.UUID;
 
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -40,6 +41,10 @@ public class Cart extends BaseEntity {
     @ManyToOne
     @JoinColumn(name="user_id")
     private UserInfo userInfo;
+    
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "product_id")
+    private Product productId;
 
 
 }

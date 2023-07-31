@@ -85,19 +85,6 @@ public class OrderHistoryController {
     @GetMapping("/{uuid}")
     public String view(@PathVariable UUID uuid, Model model){
         OrderHistory order = orderHistoryService.findById(uuid);
-        order.setGross(order.getTax() + order.getTotal());
-
-//        if(order.getUserInfo().getWallet() == null){
-//            Wallet wallet = new Wallet();
-//            wallet.setBalance(0F);
-//            wallet.setUserInfo(order.getUserInfo());
-//            wallet = walletService.save(wallet);
-//            order.getUserInfo().setWallet(wallet);
-//        }
-
-        //check if invoice exists
-
-
         model.addAttribute("order", order);
 
         model.addAttribute("statusList", OrderStatus.values());
@@ -108,14 +95,14 @@ public class OrderHistoryController {
         return "dashboard/html/order/OrderDetailView";
     }
 
-        @PostMapping("/delete")
-        public String delete(@RequestParam UUID uuid){
-        OrderHistory order = orderHistoryService.findById(uuid);
-        order.setDeleted(true);
-        orderHistoryService.save(order);
-        return "redirect:/order/all";
-
-        }
+    @PostMapping("/delete")
+    public String delete(@RequestParam UUID uuid){
+	    OrderHistory order = orderHistoryService.findById(uuid);
+	    order.setDeleted(true);
+	    orderHistoryService.save(order);
+	    return "redirect:/order/all";
+    }
+        
    // @PreAuthorize("hasAuthority('ROLE_ADMIN')")
     @PostMapping("/update")
     public String update(@ModelAttribute OrderDto orderDto){

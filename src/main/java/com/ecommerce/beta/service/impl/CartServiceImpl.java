@@ -10,8 +10,8 @@ import org.springframework.stereotype.Service;
 
 import com.ecommerce.beta.dto.CouponValidityResponseDto;
 import com.ecommerce.beta.entity.Cart;
+import com.ecommerce.beta.entity.Product;
 import com.ecommerce.beta.entity.UserInfo;
-import com.ecommerce.beta.entity.Variant;
 import com.ecommerce.beta.repository.CartRepository;
 import com.ecommerce.beta.service.CartService;
 import com.ecommerce.beta.service.CategoryService;
@@ -58,56 +58,103 @@ public class CartServiceImpl implements CartService {
         return cartRepository.findById(uuid).orElse(null);
     }
 
+//    @Override
+//    public boolean addToCart(UUID productId, int qty) {
+//        boolean addedToCart = false;
+//
+//        UserInfo userInfo = userInfoService.findByUsername(getCurrentUsername());
+//
+////        //Get Variant using id;
+////        Variant variant = variantService.findById(UUID.fromString(variantId));
+//
+//        //fetch existing cart if exists or create a new cart for the user
+//        List < Cart > cart = findByUser(userInfo);
+//
+////        if (variant.getStock() == 0) {
+////            return false;
+////        }
+//
+//        Cart newCartItem = new Cart();
+//
+//        if (cart.size() == 0) {
+//
+////            newCartItem.setVariant(variant);
+//            newCartItem.setQuantity(Math.min(qty, 5));
+//            newCartItem.setUserInfo(userInfo);
+//            Product product=productService.getProduct(productId);
+//            newCartItem.setProductId(product);
+//            newCartItem = save(newCartItem);
+//            addedToCart = true;
+//        } else {
+//            //check if the item already exists in the cart
+//            boolean itemExists = false;
+//            for (Cart existingCartItem: cart) {
+//                if (existingCartItem.equals(newCartItem)) {
+//                    newCartItem = existingCartItem;
+//                    newCartItem.setQuantity(newCartItem.getQuantity() + qty);
+//                    if (newCartItem.getQuantity() > 5) {
+//                        newCartItem.setQuantity(5);
+//                    }
+//                    newCartItem = save(newCartItem);
+//                    itemExists = true;
+//                    break;
+//                }
+//            }
+//            if (!itemExists) {
+////                newCartItem.setVariant(variant);
+//            	Product product=productService.getProduct(productId);
+//                newCartItem.setProductId(product);
+//                newCartItem.setQuantity(qty);
+//                newCartItem.setUserInfo(userInfo);
+//                newCartItem = save(newCartItem);
+//            }
+//            addedToCart = true;
+//        }
+//        return true;
+//    }
+    
     @Override
-    public boolean addToCart(String variantId, int qty) {
+    public boolean addToCart(UUID productId, int qty) {
         boolean addedToCart = false;
 
         UserInfo userInfo = userInfoService.findByUsername(getCurrentUsername());
+        Product product = productService.getProduct(productId);
 
-        //Get Variant using id;
-        Variant variant = variantService.findById(UUID.fromString(variantId));
-
-        //fetch existing cart if exists or create a new cart for the user
-        List < Cart > cart = findByUser(userInfo);
-
-//        if (variant.getStock() == 0) {
-//            return false;
-//        }
+        // Fetch existing cart if exists or create a new cart for the user
+        List<Cart> cart = findByUser(userInfo);
 
         Cart newCartItem = new Cart();
 
         if (cart.size() == 0) {
-
-            newCartItem.setVariant(variant);
+            newCartItem.setProductId(product);
             newCartItem.setQuantity(Math.min(qty, 5));
             newCartItem.setUserInfo(userInfo);
             newCartItem = save(newCartItem);
             addedToCart = true;
         } else {
-            //check if the item already exists in the cart
-            boolean itemExists = false;
-            for (Cart existingCartItem: cart) {
-                if (existingCartItem.getVariant().equals(variant)) {
-                    newCartItem = existingCartItem;
-                    newCartItem.setQuantity(newCartItem.getQuantity() + qty);
-                    if (newCartItem.getQuantity() > 5) {
-                        newCartItem.setQuantity(5);
-                    }
-                    newCartItem = save(newCartItem);
-                    itemExists = true;
+            // Check if the item already exists in the cart
+            for (Cart existingCartItem : cart) {
+                if (existingCartItem.getProductId().equals(product)) {
+                    int updatedQty = existingCartItem.getQuantity() + qty;
+                    existingCartItem.setQuantity(Math.min(updatedQty, 5));
+                    existingCartItem = save(existingCartItem);
+                    addedToCart = true;
                     break;
                 }
             }
-            if (!itemExists) {
-                newCartItem.setVariant(variant);
-                newCartItem.setQuantity(qty);
+
+            // If the item does not exist in the cart, add a new cart item
+            if (!addedToCart) {
+                newCartItem.setProductId(product);
+                newCartItem.setQuantity(Math.min(qty, 5));
                 newCartItem.setUserInfo(userInfo);
                 newCartItem = save(newCartItem);
+                addedToCart = true;
             }
-            addedToCart = true;
         }
-        return true;
+        return addedToCart;
     }
+
 
     @Override
     public CouponValidityResponseDto checkCouponValidity() {
@@ -118,11 +165,11 @@ public class CartServiceImpl implements CartService {
 
         //find cart total
         double cartTotal = userInfo.getCartItems().stream()
-                .mapToDouble(cartItem -> cartItem.getVariant().getSellingPrice() * cartItem.getQuantity())
+                .mapToDouble(cartItem -> cartItem.getProductId().getPrice().intValue() * cartItem.getQuantity())
                 .sum();
         //mrp
         double cartMrp = userInfo.getCartItems().stream()
-                .mapToDouble(cartItem -> cartItem.getVariant().getPrice() * cartItem.getQuantity())
+                .mapToDouble(cartItem -> cartItem.getProductId().getPrice().intValue() * cartItem.getQuantity())
                 .sum();
 
         couponValidityResponseDto.setCartTotal(cartTotal);

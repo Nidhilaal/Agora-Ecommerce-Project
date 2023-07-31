@@ -47,10 +47,10 @@
 						<li><a href="#"><i class="fa fa-map-marker"></i> DotSpace,Business park</a></li>
 					</ul>
 					<ul class="header-links pull-right">
-						<li><a th:href="@{/logout}"><i class="fa fa-user-o"></i> Logout</a></li>
-					</ul>
-					<ul class="header-links pull-right">
-						<li><a th:href="@{/profile}"><i class="fa fa-user-o"></i> My Account</a></li>
+						<li class="ml-3"><a th:href="@{/profile}"><i class="fa fa-user-o"></i> My Account</a></li>
+						<li class="ml-3"><a th:href="@{/orders}"> Orders</a></li>
+						<li class="ml-3"><a th:href="@{/logout}">Logout</a></li>
+						
 					</ul>
 				</div>
 			</div>
@@ -65,7 +65,7 @@
 						<!-- LOGO -->
 						<div class="col-md-3">
 							<div class="header-logo">
-								<a href="#" class="logo">
+								<a th:href="@{/}" class="logo">
 									<img src="./img/logo.png" alt="">
 								</a>
 							</div>

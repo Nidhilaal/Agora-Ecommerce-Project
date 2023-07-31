@@ -129,19 +129,19 @@
               </a>
             </li>
              <!-- Banners  -->
-             <li class="menu-item">
+             <!-- <li class="menu-item">
               <a href="/banner/all" class="menu-link">
                 <i class="menu-icon tf-icons bx bx-photo-album"></i>
                 <div data-i18n="Analytics">Banners</div>
               </a>
             </li>
-             <!-- Coupons  -->
+             Coupons 
              <li class="menu-item">
               <a href="/coupon/all" class="menu-link">
                 <i class="menu-icon tf-icons bx bx-star"></i>
                 <div data-i18n="Analytics">Coupons</div>
               </a>
-            </li>
+            </li> -->
 
 
           </ul>
@@ -304,9 +304,9 @@
                              <th style="width: 17%;" onclick="sortTable('createdAt')"><a href="#">Date</a></th>
                              <th style="width: 10%;" onclick="sortTable('orderStatus')"><a href="#">Status</a></th>
                              <th style="width: 10%;" onclick="sortTable('orderType')"><a href="#">Type</a></th>
-                             <th style="width: 10%;" onclick="sortTable('total')"><a href="#">Gross</a></th>
-                             <th style="width: 10%;" onclick="sortTable('offPrice')"><a href="#">Off</a></th>
-                             <th style="width: 15%;" onclick="sortTable('userInfo.username')"><a href="#">username</a></th>
+                             <th style="width: 10%;" onclick="sortTable('total')"><a href="#">Total</a></th>
+<!--                              <th style="width: 10%;" onclick="sortTable('offPrice')"><a href="#">Off</a></th>
+ -->                             <th style="width: 15%;" onclick="sortTable('userInfo.username')"><a href="#">username</a></th>
                              <th>Actions</th>
                            </tr>
                            </thead>
@@ -339,8 +339,8 @@
 
                              <td th:text="${order.orderType}"></td>
                              <td th:text="${#numbers.formatDecimal(order.getGross(), 0, 0)}"></td>
-                             <td th:text="${#numbers.formatDecimal(order.getOff(), 0, 0)}"></td>
-                             <td th:text="${order.userInfo.username}"></td>
+<!--                              <td th:text="${#numbers.formatDecimal(order.getOff(), 0, 0)}"></td>
+ -->                             <td th:text="${order.userInfo.username}"></td>
                              <td>
                                <a th:href="@{/order/{uuid}(uuid=${order.uuid})}"  class="edit" title="Edit" data-toggle="">
                                  <i class="bx bx-edit-alt me-1"></i>

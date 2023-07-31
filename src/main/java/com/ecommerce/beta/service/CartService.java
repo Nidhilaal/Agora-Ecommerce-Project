@@ -22,7 +22,7 @@ public interface CartService {
 
     Cart findCartByUuid(UUID uuid);
 
-    boolean addToCart(String variantId, int qty);
+    boolean addToCart(UUID productId, int qty);
 
 	CouponValidityResponseDto checkCouponValidity();
 
