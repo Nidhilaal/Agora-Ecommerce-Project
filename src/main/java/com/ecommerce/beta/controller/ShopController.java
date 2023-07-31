@@ -422,18 +422,15 @@ public class ShopController {
     
     @PostMapping("/cancel-order")
     public String cancelOrder(@RequestParam("uuid") UUID uuid) {
-    	System.out.println("heoo");
+    	
         OrderHistory order = orderHistoryService.findById(uuid);
-        if (order != null && !order.getOrderStatus().equals("CANCELLED")) {
-        	System.out.println("he0oo");
-        	 if (order != null && order.getOrderStatus() != OrderStatus.CANCELLED) {
-        		 System.out.println("he00oo");
-                 order.setOrderStatus(OrderStatus.CANCELLED);
-                 orderHistoryService.save(order);
-             }        
-        	 }
+        	
+		 if (order != null && order.getOrderStatus() != OrderStatus.CANCELLED) {
+	         order.setOrderStatus(OrderStatus.CANCELLED);
+	         orderHistoryService.save(order);
+	          
+		 }
         return "redirect:/orders";
     }
-   
 }
   
