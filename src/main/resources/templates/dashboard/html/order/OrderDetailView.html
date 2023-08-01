@@ -276,7 +276,7 @@
 <!--                              calling rest from a th:value-->
 <!--                               <button type="button" th:data-uuid="${order.uuid}" onclick="viewInvoice(this.getAttribute('data-uuid'))" class="btn btn-success m-1"  data-bs-toggle="tooltip" data-bs-offset="0,4" data-bs-placement="top" data-bs-html="true" title="" data-bs-original-title="<span>View existing Invoice. Generates new invoice if not found.</span>">View Invoice</button>
  -->
-                              <a type="button" href="/order/all" class="btn btn-primary m-1">Order List</a>
+                              <a type="button" href="/order/all" class="btn btn-primary m-1">Back</a>
                               <button onclick="editOrder()" id="editBtn" type="button" class="btn btn-warning m-1">Edit</button>
                               <button  data-bs-toggle="modal" data-bs-target="#exampleModal" hidden id="deleteBtn" type="button" class="btn btn-danger m-1">Delete</button>
 
@@ -309,55 +309,48 @@
 
                                   </div>
 
-                                  <div class="mb-3">
+                                  <div class="row mb-3">
+								    <div class="col-6">
+								        <div class="card">
+								            <div class="card-body">
+								                <h5 class="card-title">User Information</h5>
+								                <p class="card-text">
+								                    <a th:href="@{/dashboard/users/{uuid}(uuid=${order.userInfo.uuid})}" class="my-2 badge bg-primary" data-bs-toggle="tooltip" data-bs-offset="0,4" data-bs-placement="right" data-bs-html="true" title="" data-bs-original-title="<span>Open User/Wallet Management</span>">View User Details</a><br>
+								                    User ID: <span th:text="${order.userInfo.uuid}"></span><br>
+								                    Name: <span th:text="${order.userInfo.firstName + ' ' + order.userInfo.lastName}"></span><br>
+								                    username: <span th:text="${order.userInfo.username}"></span><br>
+								                    Email: <span th:text="${order.userInfo.email}"></span><br>
+								                    Phone: <span th:text="${order.userInfo.phone}"></span><br>
+								                    <!-- <div th:if="${order.userInfo.createdAt != null}">
+								                        User Since: <span th:text="${order.userInfo.createdAt}"></span><br>
+								                    </div> -->
+								                    <!-- Wallet Balance: <span th:text="${order.userInfo.wallet.balance}"></span><br> -->
+								                </p>
+								            </div>
+								        </div>
+								    </div>
+								
+								    <div class="col-6">
+								        <div class="card mt-3 mt-md-0">
+								            <div class="card-body">
+								                <h5 class="card-title">Shipping Address</h5>
+								                <p class="card-text">
+								                    Flat: <span th:text="${order.userAddress.flat}"></span><br>
+								                    Area: <span th:text="${order.userAddress.area}"></span><br>
+								                    Town: <span th:text="${order.userAddress.town}"></span><br>
+								                    City: <span th:text="${order.userAddress.city}"></span><br>
+								                    State: <span th:text="${order.userAddress.state}"></span><br>
+								                    PIN: <span th:text="${order.userAddress.pin}"></span><br>
+								                    Landmark: <span th:text="${order.userAddress.landmark}"></span>
+								                </p>
+								            </div>
+								        </div>
+								    </div>
+								</div>
 
-
-
-
-                                      <div class="col-6">
-                                          <div class="card">
-                                              <div class="card-body">
-                                                  <h5 class="card-title">User Information</h5>
-                                                  <p class="card-text">
-                                                      <a th:href="@{/dashboard/users/{uuid}(uuid=${order.userInfo.uuid})}" class="my-2 badge bg-primary" data-bs-toggle="tooltip" data-bs-offset="0,4" data-bs-placement="right" data-bs-html="true" title="" data-bs-original-title="<span>Open User/Wallet Management</span>" >View User Details</a><br>
-                                                      User ID: <span th:text="${order.userInfo.uuid}"></span><br>
-                                                      Name: <span th:text="${order.userInfo.firstName +' '+ order.userInfo.lastName}"></span><br>
-                                                      username: <span th:text="${order.userInfo.username}"></span><br>
-                                                      Email: <span th:text="${order.userInfo.email}"></span><br>
-                                                      Phone: <span th:text="${order.userInfo.phone}"></span><br>
-                                                  <div th:if="${order.userInfo.createdAt != null}">
-                                                      User Since: <span th:text="${order.userInfo.createdAt}"></span><br>
-                                                  </div>
-<!--                                                   Wallet Balance: <span th:text="${order.userInfo.wallet.balance}"></span><br>
- -->                                                  </p>
-                                              </div>
-                                          </div>
-
-                                      </div>
-
-                                      <div class="col-6 mt-3">
-                                          <div class="card">
-                                              <div class="card-body">
-                                                  <h5 class="card-title">User Address</h5>
-                                                  <p class="card-text">
-                                                      Flat: <span th:text="${order.userAddress.flat}"></span><br>
-                                                      Area: <span th:text="${order.userAddress.area}"></span><br>
-                                                      Town: <span th:text="${order.userAddress.town}"></span><br>
-                                                      City: <span th:text="${order.userAddress.city}"></span><br>
-                                                      State: <span th:text="${order.userAddress.state}"></span><br>
-                                                      PIN: <span th:text="${order.userAddress.pin}"></span><br>
-                                                      Landmark: <span th:text="${order.userAddress.landmark}"></span>
-                                                  </p>
-                                              </div>
-                                          </div>
-
-                                      </div>
-
-
-                                  </div>
  
-<!-- 
-                                  <div class="form-group">
+									
+                                  <div class="form-group mb-3"  >
                                       <label for="orderStatus">Status:</label>
                                       <select class="form-control editable-field" id="orderStatus" name="orderStatus">
                                           <option th:each="status : ${statusList}"
@@ -368,8 +361,8 @@
                                       </select>
                                   </div>
 
-                                  <div th:if="${online}"> -->
-                                      <!-- <div th:if="${order.onlineOrderRef.razorPayOrderId != null}" class="mb-3">
+                                 <!--  <div th:if="${online}"> 
+                                       <div th:if="${order.onlineOrderRef.razorPayOrderId != null}" class="mb-3">
                                           <label  class="form-label">RazorPay Order ID</label>
                                           <input th:value="${order.onlineOrderRef.razorPayOrderId}"  type="text" id="razOrderId" class="form-control" placeHolder="" readonly="readonly">
 
@@ -407,35 +400,35 @@
                                       <label  class="form-label">Coupon Applied</label>
                                       <input th:value="${order.coupon.code}"  type="text" id="coupon" class="form-control" placeHolder="" readonly="readonly">
 
-                                  </div> -->
-
-                                 <!--  <div class="mb-3">
-                                      <label  class="form-label">Total</label>
+                                  </div>  -->
+										
+                                   <div class="mb-3">
+                                      <label  class="form-label">MRP:</label>
                                       <input th:value="${order.total}"  type="text" id="total" class="form-control" placeHolder="" readonly="readonly">
 
                                   </div>
                                   <div class="mb-3">
-                                      <label  class="form-label">Tax</label>
+                                      <label  class="form-label">Tax:</label>
                                       <input th:value="${order.tax}"  type="text" id="tax" class="form-control" placeHolder="" readonly="readonly">
 
                                   </div>
                                   <div th:if="${order.offPrice != null}" class="mb-3">
-                                      <label  class="form-label">Off Price</label>
+                                      <label  class="form-label">Off Price:</label>
                                       <input th:value="${order.offPrice}"  type="text" id="offPrice" class="form-control" placeHolder="" readonly="readonly">
 
                                   </div>
                                   <div class="mb-3">
-                                      <label  class="form-label">Gross</label>
+                                      <label  class="form-label">Total:</label>
                                       <input th:value="${#numbers.formatDecimal(order.getGross(), 0, 1)}"  type="text" id="grossOff" class="form-control" placeHolder="" readonly="readonly">
 
                                   </div>
 
 
                                   <div class="mb-3">
-                                      <label  class="form-label">Type</label>
+                                      <label  class="form-label">Shipping Method:</label>
                                       <input th:value="${order.orderType}"  type="text" id="orderType " class="form-control" placeHolder="" readonly="readonly">
 
-                                  </div> -->
+                                  </div> 
 
                                   <!--            add order item list-->
 

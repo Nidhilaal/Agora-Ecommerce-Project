@@ -172,11 +172,9 @@
               <div class="navbar-nav align-items-center">
 
 
-                <div class="input-group">
+                <div class="input-group ">
                   <input type="text" class="form-control" aria-label="Text input with segmented dropdown button" id="searchBox">
-                  <input type="hidden" th:value="${filter}" id="filterValue">
-                  <button type="button" class="btn btn-outline-primary" onclick="searchOrder()">Search</button>
-                  <button type="button" class="btn btn-outline-primary dropdown-toggle dropdown-toggle-split" data-bs-toggle="dropdown" aria-expanded="false">
+                  <button type="button" class="btn btn-outline-dark dropdown-toggle dropdown-toggle-split" data-bs-toggle="dropdown" aria-expanded="false">
                     <span class="visually-hidden">Toggle Dropdown</span>
                   </button>
                   <ul class="dropdown-menu dropdown-menu-end" style="">
@@ -193,8 +191,11 @@
                     <li><a class="dropdown-item" onclick="filterOrder('REFUNDED')">REFUNDED</a></li>
                     <li><a class="dropdown-item" onclick="filterOrder('PAYMENT_PENDING')">PAYMENT PENDING</a></li>
                   </ul>
-                  <button onclick="resetList()" type="button" class="btn btn-primary">Reset</button>
-                </div>
+                  <input type="hidden" th:value="${filter}" id="filterValue">
+                  <button type="button" class="btn btn-outline-dark" onclick="searchOrder()">Search</button>
+                  
+<!--                   <button onclick="resetList()" type="button" class="btn btn-dark">Reset</button>
+ -->                </div>
 
 
 
@@ -307,7 +308,6 @@
                              <th style="width: 10%;" onclick="sortTable('total')"><a href="#">Total</a></th>
 <!--                              <th style="width: 10%;" onclick="sortTable('offPrice')"><a href="#">Off</a></th>
  -->                             <th style="width: 15%;" onclick="sortTable('userInfo.username')"><a href="#">username</a></th>
-                             <th>Actions</th>
                            </tr>
                            </thead>
                            <tbody>
@@ -341,20 +341,7 @@
                              <td th:text="${#numbers.formatDecimal(order.getGross(), 0, 0)}"></td>
 <!--                              <td th:text="${#numbers.formatDecimal(order.getOff(), 0, 0)}"></td>
  -->                             <td th:text="${order.userInfo.username}"></td>
-                             <td>
-                               <a th:href="@{/order/{uuid}(uuid=${order.uuid})}"  class="edit" title="Edit" data-toggle="">
-                                 <i class="bx bx-edit-alt me-1"></i>
-                               </a>
-
-<!--                               <a th:href="@{/order/delete/{uuid}(uuid=${order.uuid})}" class="delete-link" data-toggle="modal" data-target="#delete-confirm-modal">-->
-<!--                                 <i class="bx bx-trash me-1"></i>-->
-<!--                               </a>-->
-
-
-
-                               <!--            <a th:href="@{/app/admin/delete/{id}(id=${user.id})}" class="delete" title="Delete" data-toggle="tooltip" onclick="confirmDelete(event)"><i class="material-icons">&#xE872;</i></a>-->
-
-                             </td>
+                          
                            </tr>
 
                            </tbody>

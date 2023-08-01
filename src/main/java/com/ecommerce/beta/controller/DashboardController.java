@@ -36,7 +36,7 @@ public class DashboardController {
                         String keyword,
                         @PageableDefault(size = 15, sort = "username") Pageable pageable,
                         @RequestParam(defaultValue = "0") int page,
-                        @RequestParam(defaultValue = "3") int size,
+                        @RequestParam(defaultValue = "7") int size,
                         @RequestParam(defaultValue = "username") String field,
                         @RequestParam(defaultValue = "ASC") String sort){
 

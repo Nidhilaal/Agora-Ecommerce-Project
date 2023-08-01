@@ -36,7 +36,7 @@ public class OrderHistoryController {
                       @RequestParam(required = false, defaultValue = "") String filter,
                       @PageableDefault(size = 15, sort = "createdAt", direction = Sort.Direction.DESC) Pageable pageable,
                       @RequestParam(defaultValue = "0") int page,
-                      @RequestParam(defaultValue = "10") int size,
+                      @RequestParam(defaultValue = "5") int size,
                       @RequestParam(defaultValue = "createdAt") String field,
                       @RequestParam(defaultValue = "DESC") String sort){
 
