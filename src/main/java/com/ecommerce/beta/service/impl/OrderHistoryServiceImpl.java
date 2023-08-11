@@ -9,6 +9,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import com.ecommerce.beta.entity.Coupon;
 import com.ecommerce.beta.entity.OrderHistory;
 import com.ecommerce.beta.entity.UserInfo;
 import com.ecommerce.beta.enums.OrderStatus;
@@ -104,6 +105,11 @@ public class OrderHistoryServiceImpl implements OrderHistoryService {
 	public List<OrderHistory> findByUserInfo(UserInfo userInfo) {
 		return orderHistoryRepository.findByUserInfo(userInfo);
 	}
+
+	@Override
+    public Page<OrderHistory> findByCoupon(Coupon coupon, Pageable pageable) {
+        return orderHistoryRepository.findByCoupon(coupon, pageable );
+    }
 
 //	@Override
 //	public boolean findByAddressId(UUID uuid) {

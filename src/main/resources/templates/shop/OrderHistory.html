@@ -241,11 +241,20 @@
                            </td>
                             <td>
                     <!-- Use th:if to conditionally display the form and button if the payment is not cancelled -->
-                    <form th:if="${not #strings.equals(order.orderStatus, 'CANCELLED')}" method="post" th:action="@{/cancel-order}">
-                        <!-- Use th:hidden to include the UUID in the form -->
-                        <input type="hidden" th:name="uuid" th:value="${order.uuid}" />
-                        <button type="submit" class="btn btn-danger btn-sm">Cancel</button>
-                    </form>
+                    <div style="display: flex;">
+					    <form th:if="${not #strings.equals(order.orderStatus, 'RETURN_REQUESTED') and not #strings.equals(order.orderStatus, 'CANCELLED')}" method="post" th:action="@{/return-order}" style="margin-right: 10px;">
+						    <!-- Use th:hidden to include the UUID in the form -->
+						    <input type="hidden" th:name="uuid" th:value="${order.uuid}" />
+						    <button type="submit" class="btn btn-warning btn-sm">Return</button>
+						</form>
+
+					    <form th:if="${not #strings.equals(order.orderStatus, 'RETURN_REQUESTED') and not #strings.equals(order.orderStatus, 'CANCELLED')}" method="post" th:action="@{/cancel-order}" style="margin-right: 10px;">
+					        <!-- Use th:hidden to include the UUID in the form -->
+					        <input type="hidden" th:name="uuid" th:value="${order.uuid}" />
+					        <button type="submit" class="btn btn-danger btn-sm">Cancel</button>
+					    </form>
+					</div>
+
                 </td>
 	                    <!-- Add more table data cells based on your OrderHistory class properties -->
 	                </tr>

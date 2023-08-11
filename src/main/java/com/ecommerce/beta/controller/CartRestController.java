@@ -17,6 +17,7 @@ import com.ecommerce.beta.entity.Cart;
 import com.ecommerce.beta.entity.UserInfo;
 import com.ecommerce.beta.entity.Variant;
 import com.ecommerce.beta.service.CartService;
+import com.ecommerce.beta.service.CouponService;
 import com.ecommerce.beta.service.UserInfoService;
 import com.ecommerce.beta.service.VariantService;
 
@@ -29,6 +30,9 @@ public class CartRestController {
     CartService cartService;
     @Autowired
     VariantService variantService;
+    
+    @Autowired
+    CouponService couponService;
 
     @PostMapping("/add")
     public String addToCart(@RequestParam("qty") int quantity,
@@ -148,9 +152,7 @@ public class CartRestController {
         return "redirect:/viewCart"; // Redirect back to the same update page after saving changes
     }
 
-
-
-    //getting current username
+	//getting current username
     public String getCurrentUsername() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         return authentication.getName();

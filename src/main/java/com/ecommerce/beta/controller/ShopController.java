@@ -23,6 +23,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import com.ecommerce.beta.dto.CouponValidityResponseDto;
 import com.ecommerce.beta.dto.UserDto;
 import com.ecommerce.beta.entity.Address;
 import com.ecommerce.beta.entity.Cart;
@@ -310,13 +311,11 @@ public class ShopController {
            return "redirect:/profile?addAddress=true";
         }
 
-
         List<Cart> cartItems = cartService.findByUser(userInfo);
 
         //remove items if they are out of stock or disabled
       
-
-        List<Address> addressList = userAddressService.findByUserInfoAndEnabled(userInfo,true);
+		   List<Address> addressList = userAddressService.findByUserInfoAndEnabled(userInfo,true);
 
         model.addAttribute("addressList", addressList);
 
@@ -329,36 +328,39 @@ public class ShopController {
             model.addAttribute("cartEmpty", false);
         }
 
-
-  
-
         model.addAttribute("loggedIn", true);
-
-
 
         model.addAttribute("cartItems", cartItems);
         //find cart total
-        double cartTotal = cartItems.stream()
-                .mapToDouble(cartItem -> cartItem.getProductId().getPrice().intValue() * cartItem.getQuantity())
-                .sum();
-        //mrp
-        double cartMrp = cartItems.stream()
-                .mapToDouble(cartItem -> cartItem.getProductId().getPrice().intValue() * cartItem.getQuantity())
-                .sum();
+//        double cartTotal = cartItems.stream()
+//                .mapToDouble(cartItem -> cartItem.getProductId().getPrice().intValue() * cartItem.getQuantity())
+//                .sum();
+//        //mrp
+//        double cartMrp = cartItems.stream()
+//                .mapToDouble(cartItem -> cartItem.getProductId().getPrice().intValue() * cartItem.getQuantity())
+//                .sum();
 
+        CouponValidityResponseDto couponValidityResponseDto=cartService.checkCouponValidity();
+        double cartTotal=couponValidityResponseDto.getCartTotal();
+        System.out.println(couponValidityResponseDto.getCartTotal()+"loading viecart");
+        
         float total = (float) cartTotal;
-        float tax = total / 100 * 18; //18%
-        total -= tax;
-        float gross = total + tax;
-
+//        float tax = total / 100 * 18; //18%
+//        total -= tax;
+//        float gross = total + tax;
+        if(userInfo.getCoupon()!=null) {
+        	model.addAttribute("appliedCouponCode",userInfo.getCoupon());
+        	 model.addAttribute("couponApplied", true);
+        	
+        }
 
         model.addAttribute("cartTotal", Math.round(total));
 
-        model.addAttribute("cartTax", Math.round(tax));
+//        model.addAttribute("cartTax", Math.round(tax));
 
-        model.addAttribute("cartSaved", Math.round(cartMrp - cartTotal));
-
-        model.addAttribute("cartMrp", Math.round(cartMrp));
+//        model.addAttribute("cartSaved", Math.round(cartMrp - cartTotal));
+//
+//        model.addAttribute("cartMrp", Math.round(cartMrp));
 
         List<Address> addresses = userAddressService.findByUserInfoAndEnabled(userInfo, true);
 
@@ -421,12 +423,25 @@ public class ShopController {
     }
     
     @PostMapping("/cancel-order")
-    public String cancelOrder(@RequestParam("uuid") UUID uuid) {
+    public String returnOrder(@RequestParam("uuid") UUID uuid) {
     	
         OrderHistory order = orderHistoryService.findById(uuid);
         	
 		 if (order != null && order.getOrderStatus() != OrderStatus.CANCELLED) {
 	         order.setOrderStatus(OrderStatus.CANCELLED);
+	         orderHistoryService.save(order);
+	          
+		 }
+        return "redirect:/orders";
+    }
+    
+    @PostMapping("/return-order")
+    public String cancelOrder(@RequestParam("uuid") UUID uuid) {
+    	
+        OrderHistory order = orderHistoryService.findById(uuid);
+        	
+		 if (order != null && order.getOrderStatus() != OrderStatus.CANCELLED) {
+	         order.setOrderStatus(OrderStatus.RETURN_REQUESTED);
 	         orderHistoryService.save(order);
 	          
 		 }

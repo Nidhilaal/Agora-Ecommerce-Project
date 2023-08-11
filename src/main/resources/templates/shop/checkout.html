@@ -330,47 +330,55 @@
 			</div> -->
 			<div th:if="${!cartEmpty}">
 			<div class="container mt-4">
-    <div class="row">
-      <div class="col-md-8">
-     
-       <form method="post" th:action="@{/cart/update}" class="table-form">
-  <table class="table table-bordered">
-    <thead>
-      <tr>
-        <th>Product</th>
-        <th>Quantity</th>
-        <th>Price</th>
-      </tr>
-    </thead>
-    <tbody>
-      <!-- Loop through cartItems -->
-      <th:block th:each="cartItem : ${cartItems}">
-        <tr>
-          <td th:text="${cartItem.productId.name}"></td>
-          <td>
-            <div class="input-number">
-              <input type="number" name="qty" min="0" max="5" th:value="${cartItem.quantity}" required>
-              <span class="qty-up">+</span>
-              <span class="qty-down">-</span>
-              <input type="hidden" name="cartItemId" th:value="${cartItem.uuid.toString()}">
-              
-            </div>
-          </td>
-          <td th:text="${cartItem.productId.price}"></td>
-        </tr>
-       
-      </th:block>
-    </tbody>
-  </table>
-
-  <!-- Update button -->
-  <button type="submit" class="btn btn-warning">Update</button>
-</form>
-
-
+			    <div class="row">
+			      <div class="col-md-8">
+			     
+			       <form method="post" th:action="@{/cart/update}" class="table-form">
+			  <table class="table table-bordered">
+			    <thead>
+			      <tr>
+			        <th>Product</th>
+			        <th>Quantity</th>
+			        <th>Price</th>
+			      </tr>
+			    </thead>
+			    <tbody>
+			      <!-- Loop through cartItems -->
+			      <th:block th:each="cartItem : ${cartItems}">
+			        <tr>
+			          <td th:text="${cartItem.productId.name}"></td>
+			          <td>
+			            <div class="input-number">
+			              <input type="number" name="qty" min="0" max="5" th:value="${cartItem.quantity}" required>
+			              <span class="qty-up">+</span>
+			              <span class="qty-down">-</span>
+			              <input type="hidden" name="cartItemId" th:value="${cartItem.uuid.toString()}">
+			              
+			            </div>
+			          </td>
+			          <td th:text="${cartItem.productId.price}"></td>
+			        </tr>
+			       
+			      </th:block>
+			    </tbody>
+			  </table>
+			
+			  <!-- Update button -->
+			  <button type="submit" class="btn btn-warning">Update</button>
+			</form>
+			<br>
+			 <form method="post" th:action="@{/cart/apply-coupon}">
+			  <input type="text" name="couponCode" placeholder="Enter Coupon Code" required >		
+			  <input type="hidden" name="cartTotal" th:value="${cartTotal}">	  
+			  <!-- Add the Apply button -->
+			  <button type="submit" class="btn btn-dark">Apply</button>
+			</form>
+			 <div th:if="${couponApplied}">
+       			 <p>Coupon has been applied!</p>
+    		</div>
 		<br>
-        <h4>MRP: ₹<span th:text="${cartTotal}"></span></h4>
-        <h3>Total: ₹<span th:text="${cartMrp}"></span></h3>
+<!--         <h4>MRP: ₹<span th:text="${cartMrp}"></span></h4>
+ -->        <h3>Total: ₹<span th:text="${cartTotal}"></span></h3>
 
         <form method="post" th:object="${NewOrderDto}" th:action="@{/cart/checkout}" class="my-4">
           <input type="hidden" name="addressId" th:value="${address.uuid}" />
@@ -385,6 +393,8 @@
             <option selected="selected" value="COD">Cash On Delivery</option>
             <option id="onlineOption" value="Online">Pay Online</option>
           </select>
+          <!-- Display order details here -->
+          
 
           <div hidden="hidden" id="payLoader" class="my-3">
             <lottie-player src="https://assets10.lottiefiles.com/packages/lf20_p8bfn5to.json" background="transparent" speed="1" style="width: 300px; height: 300px;" loop autoplay></lottie-player>
@@ -401,8 +411,8 @@
         </button> -->
         </form>
 
-        
       </div>
+       
 
       <div class="col-md-4">
         <div id="addressSelector" class="border p-3">

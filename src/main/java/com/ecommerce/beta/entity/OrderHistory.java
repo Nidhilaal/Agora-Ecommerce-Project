@@ -63,6 +63,11 @@ public class OrderHistory extends BaseEntity { //Order is a reserved keyword
     @OneToMany(mappedBy = "orderHistory", cascade = CascadeType.ALL)
     @ToString.Exclude
     private List<OrderItems> items = new ArrayList<>();
+    
+    @ManyToOne
+    @JoinColumn(name="coupon_id")
+    @ToString.Exclude
+    private Coupon coupon;
 
 
     @ManyToOne

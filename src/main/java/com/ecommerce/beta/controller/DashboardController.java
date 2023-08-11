@@ -22,6 +22,7 @@ import com.ecommerce.beta.worker.UsernameProvider;
 
 @Controller
 @RequestMapping("/dashboard")
+@PreAuthorize("hasAuthority('ROLE_ADMIN')")
 public class DashboardController {
 	
     @Autowired
@@ -29,6 +30,7 @@ public class DashboardController {
 
     @Autowired
     UsernameProvider usernameProvider;
+   
     
     @GetMapping("/users")
     @PreAuthorize("hasAuthority('ROLE_ADMIN')")
@@ -112,5 +114,42 @@ public class DashboardController {
 //        userInfoService.delete(uuid);
         return "redirect:/dashboard/users";
     }
-
+//    @PostMapping("/generateReport")
+//    //  @PreAuthorize("hasAuthority('ROLE_ADMIN')")
+//      @ResponseBody
+//      public ResponseEntity<ByteArrayResource> salesReportGenerator(@RequestBody Map<String, Object> requestData ) throws ParseException, IOException, DocumentException {
+//          String report = (String) requestData.get("report");
+//          String type = (String) requestData.get("type");
+//
+//          SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+//          Date fromDate = dateFormat.parse((String) requestData.get("from"));
+//          Date toDate = dateFormat.parse((String) requestData.get("to"));
+//
+//          String generatedFile="";
+//          switch (report){
+//              case "orders" ->{
+//                  List<OrderHistory> orders = orderHistoryService.findOrdersByDate(fromDate, toDate);
+//                  if(type.equals("csv")){
+//                      generatedFile = reportGenerator.generateOrderHistoryCsv(orders);
+//                  }else {
+//                      generatedFile = reportGenerator.generateOrderHistoryPdf(orders, (String) requestData.get("from"), (String) requestData.get("to"));
+//                  }
+//              }
+//          }
+//          File requestedFile = new File(generatedFile);
+//          ByteArrayResource resource = new ByteArrayResource(FileUtils.readFileToByteArray(requestedFile));
+//          HttpHeaders headers = new HttpHeaders();
+//
+//          if(type.equals("csv")){
+//              headers.setContentType(MediaType.parseMediaType("text/csv"));
+//          }else{
+//              headers.setContentType(MediaType.APPLICATION_PDF);
+//          }
+//          headers.setContentDispositionFormData("attachment", generatedFile);
+//          return ResponseEntity.ok()
+//                  .headers(headers)
+//                  .body(resource);
+//
+//      }
+    
 }

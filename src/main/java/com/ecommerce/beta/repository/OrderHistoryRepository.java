@@ -11,6 +11,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import com.ecommerce.beta.entity.Coupon;
 import com.ecommerce.beta.entity.OrderHistory;
 import com.ecommerce.beta.entity.UserInfo;
 import com.ecommerce.beta.enums.OrderStatus;
@@ -49,6 +50,8 @@ public interface OrderHistoryRepository extends JpaRepository<OrderHistory, UUID
     Page<OrderHistory> findByOrderStatus(OrderStatus orderStatus, Pageable pageable);
 
 //    Page<OrderHistory> findByCoupon(Coupon coupon, Pageable pageable);
+
+    Page<OrderHistory> findByCoupon(Coupon coupon, Pageable pageable);
 
     Page<OrderHistory> findByUserInfoAndDeleted(UserInfo userInfo, Boolean b, Pageable pageable);
 }

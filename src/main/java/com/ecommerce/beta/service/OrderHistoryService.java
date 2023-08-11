@@ -8,6 +8,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import com.ecommerce.beta.entity.Coupon;
 import com.ecommerce.beta.entity.OrderHistory;
 import com.ecommerce.beta.entity.UserInfo;
 import com.ecommerce.beta.enums.OrderStatus;
@@ -40,5 +41,6 @@ public interface OrderHistoryService {
      Page<OrderHistory> findByOrderStatus(OrderStatus orderStatus, Pageable pageable);
 
     Page<OrderHistory> findByIdLike(String keyword, Pageable pageable);
+    Page<OrderHistory> findByCoupon(Coupon coupon, Pageable pageable);
 
 }

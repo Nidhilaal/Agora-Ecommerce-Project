@@ -27,6 +27,7 @@ import com.ecommerce.beta.worker.UsernameProvider;
 
 @Controller
 @RequestMapping("/variant")
+@PreAuthorize("hasAuthority('ROLE_ADMIN')")
 public class VariantController {
     @Autowired
     ProductServiceImpl productService;

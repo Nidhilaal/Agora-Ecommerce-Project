@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import com.ecommerce.beta.dto.CouponValidityResponseDto;
 import com.ecommerce.beta.dto.NewOrderDto;
@@ -29,6 +30,7 @@ import com.ecommerce.beta.enums.OrderType;
 import com.ecommerce.beta.repository.OrderHistoryRepository;
 import com.ecommerce.beta.service.AddressService;
 import com.ecommerce.beta.service.CartService;
+import com.ecommerce.beta.service.CouponService;
 import com.ecommerce.beta.service.OrderHistoryService;
 import com.ecommerce.beta.service.OrderItemService;
 import com.ecommerce.beta.service.UserInfoService;
@@ -36,6 +38,7 @@ import com.ecommerce.beta.service.UserInfoService;
 @Controller
 @RequestMapping("/cart")
 public class CartController {
+	
     @Autowired
     CartService cartService;
     @Autowired
@@ -44,13 +47,13 @@ public class CartController {
     OrderHistoryService orderHistoryService;
     @Autowired
     OrderItemService orderItemService;
- 
     @Autowired
     AddressService userAddressService;
     @Autowired
-    private OrderHistoryRepository orderHistoryRepository;
-
-
+    OrderHistoryRepository orderHistoryRepository;
+    @Autowired
+    CouponService couponService;
+ 
     @GetMapping("/delete/{uuid}")
     @PreAuthorize("hasAnyRole('ROLE_USER', 'ROLE_ADMIN')")
     public String delete(@PathVariable UUID uuid){
@@ -95,10 +98,7 @@ public class CartController {
                 }
             }
 
-
             CouponValidityResponseDto couponValidityResponseDto = cartService.checkCouponValidity();
-
-
 
             float gross = (float) couponValidityResponseDto.getCartTotal();
             float tax = gross / 100f *18f;
@@ -110,6 +110,10 @@ public class CartController {
             orderHistory.setTax(tax);
             orderHistory.setGross(gross);
             orderHistory.setItems(orderItemsList);
+            
+            if(userInfo.getCoupon()!=null) {
+            	couponService.redeem(userInfo.getCoupon().getCode()) ;
+            }
 
             orderHistory = orderHistoryService.save(orderHistory);
 
@@ -125,8 +129,6 @@ public class CartController {
                 cartService.delete(item);
                 System.out.println("Cart Cleared for User:" + userInfo.getUsername());
             }
-
-
             return "redirect:/orderDetails?orderId=" + orderHistory.getUuid() + "&newOrderFlag=true";
 
         }else{
@@ -145,10 +147,27 @@ public class CartController {
 
         }
     }
-
- 
-
-
+    
+    @PostMapping("/apply-coupon")
+    public String applyCoupon(@RequestParam("couponCode") String coupon,
+    		@RequestParam double cartTotal,Model model) {
+    	
+    	String currentUsername = String.valueOf(getCurrentUsername());
+        UserInfo userInfo = userInfoService.findByUsername(currentUsername);
+        
+   	
+    	if(couponService.findByCode(coupon)!=null&& coupon.equals(couponService.findByCode(coupon).getCode())) {
+    		System.out.println(couponService.findByCode(coupon).getCode());    		
+    		couponService.saveToUser(couponService.findByCode(coupon));
+    		System.out.println("Coupon Valid");
+    			
+    	}else {
+    		
+    		System.out.println("Coupon invalid");
+    	}
+    	return "redirect:/viewCart";
+    }    
+		
     //getting current username
     public String getCurrentUsername() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();

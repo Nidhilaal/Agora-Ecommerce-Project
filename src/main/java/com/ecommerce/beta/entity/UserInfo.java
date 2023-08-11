@@ -70,12 +70,14 @@ public class UserInfo {
 	@ManyToOne(cascade = CascadeType.MERGE)
 	@JoinColumn(name = "role_id")
 	private Role role;
+	
+	@ManyToOne
+    @JoinColumn(name="coupon_id")
+    private Coupon coupon;
 
     @OneToMany(mappedBy = "userInfo")
     @ToString.Exclude
     private List<Cart> cartItems = new ArrayList<>();
-
-    
 
     @OneToMany(mappedBy = "userInfo")
     @ToString.Exclude

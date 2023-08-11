@@ -9,5 +9,5 @@ public enum OrderStatus {
     REFUNDED,
     PAYMENT_PENDING,
     RETURN_REQUESTED,
-    UNKNOWN
+    UNKNOWN, PAID
 }

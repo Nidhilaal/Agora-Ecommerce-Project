@@ -8,6 +8,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -25,10 +26,11 @@ import com.ecommerce.beta.service.OrderHistoryService;
 
 @Controller
 @RequestMapping("/order")
+@PreAuthorize("hasAuthority('ROLE_ADMIN')")
 public class OrderHistoryController {
+	
     @Autowired
     OrderHistoryService orderHistoryService;
-
 
     @GetMapping("all")
     public String all(Model model,
