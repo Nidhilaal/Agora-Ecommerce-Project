@@ -93,7 +93,8 @@ public class CartController {
 //                    orderItem.setVariant(item.getVariant());
                     orderItem.setQuantity(item.getQuantity());
                     orderItem.setOrderPrice(item.getProductId().getPrice().intValue());
-                    orderItem.setOrderHistory(orderHistory);
+                    orderItem.setOrderHistory(orderHistory);;
+                    orderItem.setProductId(item.getProductId());
                     orderItemsList.add(orderItem);
                 }
             }

@@ -44,11 +44,16 @@ public class OrderItems extends BaseEntity {
     private OrderHistory orderHistory;
 
     public String getItemName(){
-        return this.getVariant().getProductId().getName() + " " + this.getVariant().getName();
+        return this.getProductId().getName() + " " + this.getVariant().getName();
     }
     public Float getTotal(){
         return this.quantity * this.orderPrice;
     }
+    
+    @ManyToOne
+    @JoinColumn(name = "product_id")
+    private Product productId;
+    
 //    public Float getProfitPerItem(){
 //        return orderPrice - variant.getWholesalePrice();
 //    }

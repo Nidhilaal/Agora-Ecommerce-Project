@@ -12,6 +12,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Transient;
 
 import org.hibernate.annotations.GenericGenerator;
@@ -74,6 +75,10 @@ public class OrderHistory extends BaseEntity { //Order is a reserved keyword
     @JoinColumn(name="address_id")
     @ToString.Exclude
     private Address userAddress;
+    
+    @OneToOne(mappedBy = "orderHistory")
+    @ToString.Exclude
+    private OnlineOrderRef onlineOrderRef;
 
     //custom getters
     public Float getGross() {
