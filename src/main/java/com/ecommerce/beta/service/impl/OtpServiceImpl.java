@@ -79,12 +79,12 @@ public class OtpServiceImpl implements OtpService {
             generatedOtp = otpRepository.save(generatedOtp);
             System.out.println("new otp generated");
    
-         final String ACCOUNT_SID = "ACe6f4968215d17b073d0bf94a16d67cfd";
-         final String AUTH_TOKEN = "42165565cd08a833d5f619d71c23ac85";
+         final String ACCOUNT_SID = "Your Account_SID";
+         final String AUTH_TOKEN = "Your Auth_Token";
 
         Twilio.init(ACCOUNT_SID, AUTH_TOKEN);
-        PhoneNumber from = new PhoneNumber("+14179628992");
-        PhoneNumber to = new PhoneNumber("+919847105308");
+        PhoneNumber from = new PhoneNumber("Your Twilio phone number");
+        PhoneNumber to = new PhoneNumber("+91 + Your 10 digit phone Number which you have registered with twilio");
 
 
         String content = "This is your account verification OTP. Valid for 5 minutes. OTP: " + generatedOtp.getOtp();
@@ -100,5 +100,4 @@ public class OtpServiceImpl implements OtpService {
         return String.valueOf(otpNumber);
     }
 	
-
 }
