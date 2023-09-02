@@ -24,13 +24,13 @@ import com.ecommerce.beta.service.VariantService;
 @Controller
 @RequestMapping("/cart")
 public class CartRestController {
+	
     @Autowired
     UserInfoService userInfoService;
     @Autowired
     CartService cartService;
     @Autowired
-    VariantService variantService;
-    
+    VariantService variantService;    
     @Autowired
     CouponService couponService;
 
@@ -62,6 +62,7 @@ public class CartRestController {
 //        return "redirect:/productDetail?productUuid=" + productUuid;
         
     }
+    
     @PostMapping("/delete")
     @PreAuthorize("hasAnyRole('ROLE_USER', 'ROLE_ADMIN')")
     public String deleteFromCart(@RequestParam Variant variantId){

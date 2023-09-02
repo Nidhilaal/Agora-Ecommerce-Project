@@ -7,6 +7,7 @@ import java.util.UUID;
 import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -34,6 +35,7 @@ import com.ecommerce.beta.service.CouponService;
 import com.ecommerce.beta.service.OrderHistoryService;
 import com.ecommerce.beta.service.OrderItemService;
 import com.ecommerce.beta.service.UserInfoService;
+import com.razorpay.RazorpayClient;
 
 @Controller
 @RequestMapping("/cart")
@@ -53,6 +55,15 @@ public class CartController {
     OrderHistoryRepository orderHistoryRepository;
     @Autowired
     CouponService couponService;
+    @Value("${razorpay.keyId}")
+    private String razorpayKeyId;
+
+    @Value("${razorpay.keySecret}")
+    private String razorpayKeySecret;
+    
+    @Autowired
+    RazorpayClient razorpayClient;
+  
  
     @GetMapping("/delete/{uuid}")
     @PreAuthorize("hasAnyRole('ROLE_USER', 'ROLE_ADMIN')")
@@ -72,6 +83,68 @@ public class CartController {
         List<Cart> cartItems = cartService.findByUser(userInfo);
 
         if(!cartItems.isEmpty()){
+        	if(newOrderDto.getPaymentMethod().equals("Online")) {
+        		 List<OrderItems> orderItemsList = new ArrayList<>();
+
+                 OrderHistory orderHistory = new OrderHistory();
+                 orderHistory.setOrderStatus(OrderStatus.PAID);
+                 orderHistory.setOrderType(OrderType.ONLINE);
+                 orderHistory.setUserInfo(userInfo);
+                 orderHistory.setUserAddress(userAddressService.findById(newOrderDto.getAddressId()));
+                 orderHistory = orderHistoryRepository.save(orderHistory);
+
+                 for (Cart item : cartItems) {
+     //
+//                     if (item.getQuantity() > item.getVariant().getStock()) {
+//                         item.setQuantity(item.getVariant().getStock());
+//                     }
+
+                     if (item.getQuantity() != 0) { //if itemQty == 0, after the previous if condition, it means that the product has gone out of stock.
+                         OrderItems orderItem = new OrderItems();
+//                         orderItem.setVariant(item.getVariant());
+                         orderItem.setQuantity(item.getQuantity());
+                         orderItem.setOrderPrice(item.getProductId().getPrice().intValue());
+                         orderItem.setOrderHistory(orderHistory);;
+                         orderItem.setProductId(item.getProductId());
+                         orderItemsList.add(orderItem);
+                     }
+                 }
+
+                 CouponValidityResponseDto couponValidityResponseDto = cartService.checkCouponValidity();
+
+                 float gross = (float) couponValidityResponseDto.getCartTotal();
+                 float tax = gross / 100f *18f;
+                 float total = gross - tax;
+
+                 //Create Order
+
+                 orderHistory.setTotal(total);
+                 orderHistory.setTax(tax);
+                 orderHistory.setGross(gross);
+                 orderHistory.setItems(orderItemsList);
+                 
+                 if(userInfo.getCoupon()!=null) {
+                 	couponService.redeem(userInfo.getCoupon().getCode()) ;
+                 }
+
+                 orderHistory = orderHistoryService.save(orderHistory);
+
+//                 for (OrderItems item : orderItemsList) {
+//                     //reduce stock
+//                     Variant variant = variantService.findById(item.getVariant().getUuid());
+//                     System.out.println(variant.getProductId().getName()+" "+variant.getName());
+//                     variantService.save(variant);
+//                 }
+
+                 //Delete items from cart
+                 for (Cart item : cartItems) {
+                     cartService.delete(item);
+                     System.out.println("Cart Cleared for User:" + userInfo.getUsername());
+                 }
+             	
+                 return "redirect:/pay?orderUuid=" + orderHistory.getUuid() + "&newOrderFlag=true";
+		
+        	}else {
             System.out.println("Processing COD order from user:"+userInfo.getUsername());
             List<OrderItems> orderItemsList = new ArrayList<>();
 
@@ -130,8 +203,10 @@ public class CartController {
                 cartService.delete(item);
                 System.out.println("Cart Cleared for User:" + userInfo.getUsername());
             }
+        	
             return "redirect:/orderDetails?orderId=" + orderHistory.getUuid() + "&newOrderFlag=true";
-
+        	}
+        	
         }else{
             //fetch order from orderHistory and convert to COD.
             System.out.println("Converting Order to COD");
@@ -147,7 +222,34 @@ public class CartController {
             return "redirect:/orderDetails?orderId=" + order.getUuid() + "&newOrderFlag=true";
 
         }
+        
     }
+//    @GetMapping("/pay")
+//    public String initiatePayment(Model model, @RequestParam("orderUuid") UUID orderUuid) {
+//        OrderHistory order = orderHistoryService.findById(orderUuid);
+//        model.addAttribute("order", order);
+//
+//        try {
+//            RazorpayClient razorpayClient = new RazorpayClient(razorpayKeyId, razorpayKeySecret);
+//            JSONObject orderRequest = new JSONObject();
+//            orderRequest.put("amount", order.getTotal() * 100); // Amount in paise
+//            orderRequest.put("currency", "INR");
+//            orderRequest.put("receipt", order.getUuid().toString());
+//            orderRequest.put("payment_capture", 1); // Auto capture payment
+//
+//            Order razorpayOrder = razorpayClient.orders.create(orderRequest);
+//            model.addAttribute("razorpayOrderId", razorpayOrder.get("id"));
+//            model.addAttribute("razorpayKey", razorpayKeyId);
+//
+//        } catch (RazorpayException e) {
+//            // Handle exception
+//            e.printStackTrace();
+//            return "redirect:/order/" + order.getUuid();
+//        }
+//
+//        return "redirect:/viewCart";
+//    }
+
     
     @PostMapping("/apply-coupon")
     public String applyCoupon(@RequestParam("couponCode") String coupon,

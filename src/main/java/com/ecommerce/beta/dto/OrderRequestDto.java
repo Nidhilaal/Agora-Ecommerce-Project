@@ -1,10 +1,15 @@
 package com.ecommerce.beta.dto;
 
-import lombok.*;
-
 import java.util.UUID;
 
-@Data
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
+
+@Getter
+@Setter
 @AllArgsConstructor
 @NoArgsConstructor
 @ToString

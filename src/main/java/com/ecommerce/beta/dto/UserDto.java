@@ -19,14 +19,19 @@ import lombok.NoArgsConstructor;
 public class UserDto {
 	
 	UUID uuid;
+	
     @NotNull(message = "First Name is empty")
     private String firstName;
+    
     @NotNull(message = "Last Name is empty")
     private String lastName;
+    
     @NotNull(message = "password is empty")
     private String password;
+    
     @NotNull(message = "password is empty")
     private String newPassword;
+    
     private String newPasswordRe;
 
     @Email(message = "not a valid email")
@@ -44,6 +49,4 @@ public class UserDto {
 
     private List<Address> savedAddress = new ArrayList<>();
 	
-	
-
 }

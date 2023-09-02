@@ -256,10 +256,13 @@ public class ShopController {
 
         return "redirect:/profile";
     }
+   
     
     @PostMapping("/user/save")
     public String save(@ModelAttribute UserDto userDto,
                        BindingResult bindingResult){
+    	
+ 
             UserInfo user = userInfoService.findByUsername(getCurrentUsername());
             if(userDto.getUuid().equals(user.getUuid())){
                 user.setFirstName(userDto.getFirstName());
@@ -380,8 +383,6 @@ public class ShopController {
         } else {
             model.addAttribute("address", userAddressService.findById(addressUUID));
         }
-
-
 
         return "shop/checkout";
     }
