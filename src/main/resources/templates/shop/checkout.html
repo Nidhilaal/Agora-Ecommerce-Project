@@ -373,9 +373,9 @@
 			  <!-- Add the Apply button -->
 			  <button type="submit" class="btn btn-dark">Apply</button>
 			</form>
-			 <div th:if="${couponApplied}">
+			<!--  <div th:if="${couponApplied}">
        			 <p>Coupon has been applied!</p>
-    		</div>
+    		</div> -->
 		<br>
 <!--         <h4>MRP: ₹<span th:text="${cartMrp}"></span></h4>
  -->        <h3>Total: ₹<span th:text="${cartTotal}"></span></h3>
@@ -406,9 +406,7 @@
               Place Order
             </button>
           </div>
-         <!--  <button  id="onlineCheckout" hidden="hidden" onclick="CreateOrderID()" class="btn btn-primary">
-          Pay Online
-        </button> -->
+        
         </form>
 
       </div>
@@ -573,6 +571,36 @@
 		<script src="js/nouislider.min.js"></script>
 		<script src="js/jquery.zoom.min.js"></script>
 		<script src="js/main.js"></script>
+		<!-- <script>
+  function paymentChange() {
+    var paymentMethod = document.getElementById("paymentMethod").value;
+    var orderAmount = /* Calculate the order amount based on your data */;
+    var onlineOption = document.getElementById("onlineOption");
+    var onlinePayHiddenMsg = document.getElementById("onlinePayHiddenMsg");
+    var onlineCheckout = document.getElementById("onlineCheckout");
 
+    if (paymentMethod === "Online") {
+      if (orderAmount > 80000) {
+        onlineOption.disabled = true;
+        onlinePayHiddenMsg.style.display = "block";
+        onlineCheckout.style.display = "none";
+      } else {
+        onlineOption.disabled = false;
+        onlinePayHiddenMsg.style.display = "none";
+        onlineCheckout.style.display = "block";
+      }
+    } else {
+      onlineOption.disabled = false;
+      onlinePayHiddenMsg.style.display = "none";
+      onlineCheckout.style.display = "none";
+    }
+  }
+
+  function CreateOrderID() {
+    // Handle online payment logic here
+    // This function is called when the "Pay Online" button is clicked
+  }
+</script>
+ -->
 	</body>
 </html>
