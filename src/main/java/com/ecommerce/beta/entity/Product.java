@@ -25,7 +25,7 @@ import lombok.ToString;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class Product  {
+public class Product   {
 
 	@Id
     @GeneratedValue(strategy = GenerationType.AUTO, generator = "uuid2")
@@ -51,4 +51,8 @@ public class Product  {
 	private List<Image> images;
 	
 	private boolean deleted = false;
+
+	 @OneToMany(mappedBy = "productId")
+    @ToString.Exclude
+    private List<Variant> variants;
 }

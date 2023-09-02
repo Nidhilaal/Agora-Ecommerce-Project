@@ -140,6 +140,7 @@ public class LoginController {
     	   
        }      
     }
+    
     private String generatePassword() {
         int passwordLength = 8; 
         String allowedCharacters = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
