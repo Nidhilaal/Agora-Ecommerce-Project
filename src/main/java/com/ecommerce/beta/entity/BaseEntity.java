@@ -34,7 +34,7 @@ public class BaseEntity {
     private Date deletedAt;  
 
     @PrePersist
-    protected void onCreate() {
+    protected void onCreate() {    	
         if (createdAt == null) {
             createdAt = new Date();
         }

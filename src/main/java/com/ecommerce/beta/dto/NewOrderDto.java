@@ -14,6 +14,7 @@ import lombok.ToString;
 @Setter
 @ToString
 public class NewOrderDto {
+	
     UUID addressId;
     String coupon;
     String paymentMethod;

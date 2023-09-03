@@ -11,6 +11,7 @@ import com.ecommerce.beta.entity.Variant;
 
 @Service
 public interface VariantService {
+	
     List<Variant> findAll();
 
     Variant save(Variant variant);

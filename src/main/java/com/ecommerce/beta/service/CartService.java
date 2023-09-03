@@ -12,6 +12,7 @@ import com.ecommerce.beta.entity.UserInfo;
 
 @Service
 public interface CartService {
+	
     List<Cart> findByUser(UserInfo userInfo);
 
     Cart save(Cart newCartItem);

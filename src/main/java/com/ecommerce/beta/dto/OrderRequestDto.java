@@ -14,11 +14,11 @@ import lombok.ToString;
 @NoArgsConstructor
 @ToString
 public class OrderRequestDto {
+	
     private Float amount;
     private String currency;
     private String receipt;
     private UUID address;
     private String coupon;
-
 
 }

@@ -14,6 +14,7 @@ import lombok.ToString;
 @Setter
 @ToString
 public class CustomerOrderDto {
+	
     private UUID uuid;
 
     private String date;
@@ -31,4 +32,5 @@ public class CustomerOrderDto {
     private String orderStatus;
 
     private String orderType;
+    
 }

@@ -37,8 +37,8 @@ public interface OrderHistoryService {
 
     Page<OrderHistory> searchOrderByKeyword(String keyword, Pageable pageable);
 
-     Page<OrderHistory> findByOrderType(OrderType orderType, Pageable pageable);
-     Page<OrderHistory> findByOrderStatus(OrderStatus orderStatus, Pageable pageable);
+    Page<OrderHistory> findByOrderType(OrderType orderType, Pageable pageable);
+    Page<OrderHistory> findByOrderStatus(OrderStatus orderStatus, Pageable pageable);
 
     Page<OrderHistory> findByIdLike(String keyword, Pageable pageable);
     Page<OrderHistory> findByCoupon(Coupon coupon, Pageable pageable);

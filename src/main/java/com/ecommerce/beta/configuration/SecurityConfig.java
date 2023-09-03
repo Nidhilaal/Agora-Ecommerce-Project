@@ -25,9 +25,8 @@ public class SecurityConfig {
 	 @Autowired
 	 private CustomAuthenticationSuccessHandler authenticationSuccessHandler;
 	 
-	
 	 @Bean
-	 public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+	 public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {		 
 		 return http.csrf().disable()
 				 .authorizeHttpRequests()
 				 .antMatchers("/app/*","/*.css","*.scss").permitAll()
@@ -53,26 +52,27 @@ public class SecurityConfig {
 	 
 	 @Bean
 	 public UserDetailsService userDetailsService(){
+		 
         return new UserInfoProviderService();
 	 }
 	 
-	@Bean
-    public AuthenticationProvider authenticationProvider(){
+	 @Bean   
+	 public AuthenticationProvider authenticationProvider(){		
         DaoAuthenticationProvider authenticationProvider = new DaoAuthenticationProvider();
         authenticationProvider.setUserDetailsService(userDetailsService());
         authenticationProvider.setPasswordEncoder(passwordEncoder());
 
         return authenticationProvider;
-    }
+     }
 	 
-    @Bean
-    public WebSecurityCustomizer webSecurityCustomizer() throws Exception{
+     @Bean
+     public WebSecurityCustomizer webSecurityCustomizer() throws Exception{    	
         return (web) -> web.ignoring().antMatchers("/static/**","/templates/**");
-    }	
+     }	
     
-    @Bean
-	PasswordEncoder passwordEncoder() {
+     @Bean
+	 PasswordEncoder passwordEncoder() {    	
 		return new BCryptPasswordEncoder();
-	}
+	 }
 
 }

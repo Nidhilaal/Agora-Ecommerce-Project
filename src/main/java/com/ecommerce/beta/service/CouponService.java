@@ -12,6 +12,7 @@ import com.ecommerce.beta.entity.Coupon;
 
 @Service
 public interface CouponService {
+	
     List<Coupon> getAll();
 
     Coupon get(UUID uuid);
@@ -33,8 +34,8 @@ public interface CouponService {
     void deleteFromUser();
 
     List<Coupon> findCouponsApplicableForCart(List<Cart> cartItems);
-     List<Coupon> findByApplicableFor(UUID uuid);
-     List<Coupon> findByCouponType(int type);
+    List<Coupon> findByApplicableFor(UUID uuid);
+    List<Coupon> findByCouponType(int type);
 
     Coupon findById(UUID uuid);
 

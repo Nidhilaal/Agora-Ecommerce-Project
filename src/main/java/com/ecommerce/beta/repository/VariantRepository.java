@@ -15,6 +15,7 @@ import com.ecommerce.beta.entity.Variant;
 
 @Repository
 public interface VariantRepository extends JpaRepository<Variant, UUID> {
+	
     @Query(value = "SELECT * FROM variant WHERE product_id = :uuid", nativeQuery = true)
     List<Variant> findVariantsByProductId(@Param("uuid") UUID uuid);
 

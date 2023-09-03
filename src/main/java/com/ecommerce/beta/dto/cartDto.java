@@ -13,9 +13,11 @@ import lombok.ToString;
 @Setter
 @ToString
 public class cartDto {
+	
     UUID uuid;
     int qty;
     double cartTotal = 0;
     double cartSaved = 0;
+    
 }
 //DTO to get updated cart details

@@ -11,5 +11,6 @@ import com.ecommerce.beta.entity.OrderItems;
 
 @Repository
 public interface OrderItemsRepository extends JpaRepository<OrderItems, UUID> {
+	
     List<OrderItems> findByOrderHistory(OrderHistory orderHistory);
 }

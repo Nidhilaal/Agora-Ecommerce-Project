@@ -12,6 +12,7 @@ import com.ecommerce.beta.entity.Coupon;
 
 @Repository
 public interface CouponRepository extends JpaRepository<Coupon, UUID> {
+	
     Coupon findByCode(String coupon);
 
     Page<Coupon> findByNameLikeOrCodeLike(String s, String t, Pageable pageable);

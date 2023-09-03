@@ -12,6 +12,6 @@ import com.ecommerce.beta.entity.Image;
 public interface ImageRepository extends JpaRepository<Image, UUID> {
 	
 	@Query(value = "SELECT * FROM image WHERE product_id = :uuid", nativeQuery = true)
-	 List<Image> findByProductId(@Param("uuid") UUID uuid);
+	List<Image> findByProductId(@Param("uuid") UUID uuid);
 
 }

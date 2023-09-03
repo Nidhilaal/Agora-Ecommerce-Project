@@ -9,6 +9,7 @@ import com.ecommerce.beta.entity.Image;
 
 @Service
 public interface ImageService {
+	
     Image save(Image imageEntity);
     List<Image> findImagesByProductId(UUID uuid);
 

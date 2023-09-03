@@ -19,13 +19,12 @@ import com.ecommerce.beta.enums.OrderType;
 
 @Repository
 public interface OrderHistoryRepository extends JpaRepository<OrderHistory, UUID> {
+	
     List<OrderHistory> findByUserInfo(UserInfo userInfo);
     Page<OrderHistory> findByUserInfo(UserInfo userInfo, Pageable pageable);
     
 //    boolean findByAddressId(UUID uuid);
     
-
-
     List<OrderHistory> findByCreatedAtBetween(Date startDate, Date endDate);
 
     @Query(value = "SELECT * FROM order_history ORDER BY created_at DESC LIMIT 5", nativeQuery = true)

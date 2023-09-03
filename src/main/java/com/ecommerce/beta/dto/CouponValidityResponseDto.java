@@ -12,6 +12,7 @@ import lombok.ToString;
 @NoArgsConstructor
 @ToString
 public class CouponValidityResponseDto {
+	
     boolean valid = false;
     double priceOff = 0;
     double cartTotal = 0;

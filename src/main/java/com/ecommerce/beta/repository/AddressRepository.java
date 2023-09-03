@@ -12,15 +12,12 @@ import com.ecommerce.beta.entity.UserInfo;
 @Repository
 public interface AddressRepository extends JpaRepository<Address, UUID> {
 
-
     List<Address> findByUserInfo(UserInfo user);
 
     List<Address> findByUserInfoAndEnabled(UserInfo userInfo, boolean b);
 
-
 //    @Query(value = "DELETE from user_address WHERE user_id = :id", nativeQuery = true)
 //    void deleteByUserId(@Param("id")UUID id);
-
 
 }
 

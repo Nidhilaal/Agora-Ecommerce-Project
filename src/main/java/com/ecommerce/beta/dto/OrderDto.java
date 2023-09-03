@@ -16,9 +16,9 @@ import lombok.ToString;
 @NoArgsConstructor
 @ToString
 public class OrderDto {
+	
     private UUID uuid;
 
     private OrderStatus orderStatus;
-
 
 }

@@ -11,6 +11,7 @@ import com.ecommerce.beta.entity.Product;
 
 @Service
 public interface  ProductService {
+	
     Product save(Product product);
 
     List<Product> findAll();

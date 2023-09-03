@@ -11,5 +11,6 @@ import com.ecommerce.beta.entity.UserInfo;
 
 @Repository
 public interface CartRepository extends JpaRepository<Cart, UUID> {
+	
     List<Cart> findByUserInfo(UserInfo userInfo);
 }
