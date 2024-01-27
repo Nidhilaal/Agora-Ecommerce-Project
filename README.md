@@ -48,11 +48,3 @@ Agora is a comprehensive ecommerce platform that allows users to browse and purc
 - Git for version control
 - GitHub for code hosting
 
-## Getting Started
-
-To get started with the Agora Ecommerce Project, follow these steps:
-
-1. Clone the repository from GitHub to your local machine:
-
-   ```bash
-   git clone https://github.com/Nidhilaal/Agora-Ecommerce-Project.git
